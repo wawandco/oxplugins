@@ -21,11 +21,11 @@ func main() {
 		log.Fatal(err)
   	}
     
-	ox := cli.New()
+	cl := cli.New()
 	// append your plugins here
-	ox.Plugins = append(wawandco.All, ...)
+	cl.Plugins = append(cl.Plugins, wawandco.All...)
     
-    err = ox.Run(ctx, pwd, os.Args)
+    err = cl.Run(ctx, pwd, os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}
