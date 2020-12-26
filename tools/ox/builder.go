@@ -10,6 +10,10 @@ import (
 // contain the tooling defined in ox/main.go
 type Builder struct{}
 
+func (b *Builder) Name() string {
+	return "ox/builder"
+}
+
 // Builds cli binary
 func (b *Builder) Build(ctx context.Context, root string, args []string) error {
 	// Skip if there is no ox/main.go
