@@ -19,7 +19,6 @@ import (
 
 // All plugins in this package
 var All = []plugins.Plugin{
-	// IMPORTANT: order matters!
 	// Tools plugins.
 	&webpack.Plugin{},
 	&refresh.Plugin{},
