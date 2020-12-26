@@ -36,6 +36,7 @@ var All = []plugins.Plugin{
 
 	// Generators
 	&ox.Generator{},
+	&ox.Builder{},
 
 	// Developer Lifecycle plugins
 	&build.Command{},
