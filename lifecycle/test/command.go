@@ -58,5 +58,5 @@ func (c *Command) Run(ctx context.Context, root string, args []string) error {
 		}
 	}
 
-	return nil
+	return err
 }
