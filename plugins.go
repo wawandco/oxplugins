@@ -1,20 +1,20 @@
 package plugins
 
 import (
-	"github.com/wawandco/oxpecker-plugins/lifecycle/build"
-	"github.com/wawandco/oxpecker-plugins/lifecycle/dev"
-	"github.com/wawandco/oxpecker-plugins/lifecycle/fix"
-	"github.com/wawandco/oxpecker-plugins/lifecycle/generate"
-	"github.com/wawandco/oxpecker-plugins/lifecycle/test"
-	"github.com/wawandco/oxpecker-plugins/tools/ox"
-	"github.com/wawandco/oxpecker-plugins/tools/packr"
-	"github.com/wawandco/oxpecker-plugins/tools/pop"
-	"github.com/wawandco/oxpecker-plugins/tools/pop/migrate"
-	"github.com/wawandco/oxpecker-plugins/tools/refresh"
-	"github.com/wawandco/oxpecker-plugins/tools/standard"
-	"github.com/wawandco/oxpecker-plugins/tools/webpack"
-	"github.com/wawandco/oxpecker-plugins/tools/yarn"
 	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/lifecycle/build"
+	"github.com/wawandco/oxplugins/lifecycle/dev"
+	"github.com/wawandco/oxplugins/lifecycle/fix"
+	"github.com/wawandco/oxplugins/lifecycle/generate"
+	"github.com/wawandco/oxplugins/lifecycle/test"
+	"github.com/wawandco/oxplugins/tools/ox"
+	"github.com/wawandco/oxplugins/tools/packr"
+	"github.com/wawandco/oxplugins/tools/pop"
+	"github.com/wawandco/oxplugins/tools/pop/migrate"
+	"github.com/wawandco/oxplugins/tools/refresh"
+	"github.com/wawandco/oxplugins/tools/standard"
+	"github.com/wawandco/oxplugins/tools/webpack"
+	"github.com/wawandco/oxplugins/tools/yarn"
 )
 
 // All plugins in this package

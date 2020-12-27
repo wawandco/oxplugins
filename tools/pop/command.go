@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/wawandco/oxpecker-plugins/tools/pop/migrate"
 	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/tools/pop/migrate"
 )
 
 // Ensuring pop.Plugin is a command

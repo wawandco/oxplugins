@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/wawandco/oxpecker-plugins/internal/info"
+	"github.com/wawandco/oxplugins/internal/info"
 )
 
 type Generator struct{}

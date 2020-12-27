@@ -9,8 +9,7 @@ You can use individual plugins in here or use the base set of plugins in the `Al
 // in cmd/ox/main.go
 import (
     ...
-    oxplugins "github.com/wawandco/oxpecker-plugins"
-    ...
+    "github.com/wawandco/oxplugins"
 )
 
 func main() {

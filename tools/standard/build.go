@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/wawandco/oxpecker-plugins/internal/info"
+	"github.com/wawandco/oxplugins/internal/info"
 )
 
 // Build runs the Go compiler to generate the desired binary. Assuming the
