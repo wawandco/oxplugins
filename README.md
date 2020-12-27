@@ -15,17 +15,18 @@ import (
 
 func main() {
     fmt.Print("~~~~ Using {{.Name}}/cmd/ox ~~~\n\n")
-	ctx := context.Background()
+    ctx := context.Background()
+
+    pwd, err := os.Getwd()
+    if err != nil {
+        log.Fatal(err)
+    }
     
-  	pwd, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-  	}
-    
-	cl := cli.New()
-	// append your plugins here
+    cl := cli.New()
+    // append your plugins here
     cl.Plugins = append(cl.Plugins, oxplugins.All...)
-...
+    ...
+}
 ```
 
 ### Plugins
