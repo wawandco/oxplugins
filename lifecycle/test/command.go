@@ -23,6 +23,10 @@ func (c Command) Name() string {
 	return "test"
 }
 
+func (c Command) ParentName() string {
+	return ""
+}
+
 func (c Command) HelpText() string {
 	return "provides the structure for test commands to run and be organized"
 }
