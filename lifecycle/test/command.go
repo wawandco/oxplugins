@@ -12,6 +12,7 @@ import (
 
 var _ plugins.Plugin = (*Command)(nil)
 var _ plugins.PluginReceiver = (*Command)(nil)
+var _ plugins.Command = (*Command)(nil)
 
 type Command struct {
 	beforeTesters []BeforeTester
