@@ -1,4 +1,4 @@
-package plugins
+package oxplugins
 
 import (
 	"github.com/wawandco/oxpecker/plugins"
