@@ -23,7 +23,7 @@ func main() {
     
     cl := cli.New()
     // append your plugins here
-    cl.Plugins = append(cl.Plugins, oxplugins.All...)
+    cl.Plugins = append(cl.Plugins, oxplugins.Base...)
     ...
 }
 ```
