@@ -17,8 +17,8 @@ import (
 	"github.com/wawandco/oxplugins/tools/yarn"
 )
 
-// All plugins in this package
-var All = []plugins.Plugin{
+// Default plugins in this package
+var Default = []plugins.Plugin{
 	// Tools plugins.
 	&webpack.Plugin{},
 	&refresh.Plugin{},
