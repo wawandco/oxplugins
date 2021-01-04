@@ -12,6 +12,9 @@ import (
 	wawandco "github.com/wawandco/oxplugins"
 )
 
+// main function for the tooling cli, will be invoked by Oxpecker
+// when found in the source code. In here you can add/remove plugins that
+// your app will use as part of its lifecycle.
 func main() {
   	fmt.Print("[info] Using {{.Name}}/cmd/ox \n\n")
 	ctx := context.Background()
