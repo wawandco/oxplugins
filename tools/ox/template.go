@@ -9,7 +9,7 @@ import (
 	"log"
 	"os"
 	"github.com/wawandco/oxpecker/cli"
-	wawandco "github.com/wawandco/oxplugins"
+	"github.com/wawandco/oxplugins"
 )
 
 // main function for the tooling cli, will be invoked by Oxpecker
@@ -26,7 +26,7 @@ func main() {
     
 	cl := cli.New()
 	// append your plugins here
-	cl.Plugins = append(cl.Plugins, wawandco.All...)
+	cl.Plugins = append(cl.Plugins, oxplugins.Base...)
     
     err = cl.Run(ctx, pwd, os.Args)
 	if err != nil {
