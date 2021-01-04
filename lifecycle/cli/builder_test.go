@@ -1,4 +1,4 @@
-package ox
+package cli
 
 import (
 	"context"
@@ -89,7 +89,7 @@ func TestBuild(t *testing.T) {
 	}
 
 	b := &Builder{}
-	err = b.Build(context.Background(), root, []string{})
+	err = b.Run(context.Background(), root, []string{})
 	if err != nil {
 		t.Errorf("error building: %v", err)
 	}

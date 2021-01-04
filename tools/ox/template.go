@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-  	fmt.Print("~~~~ Using {{.Name}}/cmd/ox ~~~\n\n")
+  	fmt.Print("[info] Using {{.Name}}/cmd/ox \n\n")
 	ctx := context.Background()
     
   	pwd, err := os.Getwd()

@@ -1,4 +1,4 @@
-package ox
+package cli
 
 import (
 	"context"
@@ -11,11 +11,19 @@ import (
 type Builder struct{}
 
 func (b *Builder) Name() string {
-	return "ox/builder"
+	return "cli"
 }
 
-// Builds cli binary
-func (b *Builder) Build(ctx context.Context, root string, args []string) error {
+func (b *Builder) ParentName() string {
+	return ""
+}
+
+func (b *Builder) HelpText() string {
+	return "Builds a binary from `cmd/ox/main.go` on `bin/cli`"
+}
+
+// Run builds cli binary
+func (b *Builder) Run(ctx context.Context, root string, args []string) error {
 	// Skip if there is no ox/main.go
 	if !b.shouldBuild() {
 		return nil
