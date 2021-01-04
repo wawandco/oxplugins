@@ -17,8 +17,10 @@ import (
 	"github.com/wawandco/oxplugins/tools/yarn"
 )
 
-// Default plugins in this package
-var Default = []plugins.Plugin{
+// Base plugins for Wawandco applications lifecycle. While oxplugins
+// has other plugins this list is the base that is used across most of
+// the apps we do. Feel free to add the rest in your cmd/ox/main.go file.
+var Base = []plugins.Plugin{
 	// Tools plugins.
 	&webpack.Plugin{},
 	&refresh.Plugin{},
