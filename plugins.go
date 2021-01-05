@@ -10,7 +10,6 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/tools/ox"
 	"github.com/wawandco/oxplugins/tools/pop"
-	"github.com/wawandco/oxplugins/tools/pop/migrate"
 	"github.com/wawandco/oxplugins/tools/refresh"
 	"github.com/wawandco/oxplugins/tools/standard"
 	"github.com/wawandco/oxplugins/tools/webpack"
@@ -26,26 +25,26 @@ var Base = []plugins.Plugin{
 	&refresh.Plugin{},
 	&yarn.Plugin{},
 
-	// Pop
-	&pop.Command{},
-	&pop.Fixer{},
-	&pop.Tester{},
-	&migrate.Plugin{},
-	&migrate.MigrateUp{},
-	&migrate.MigrateDown{},
-
-	// Fixers
-	&standard.Fixer{},
-	&standard.Plugin{},
-
-	// Generators
-	&ox.Generator{},
-
 	// Developer Lifecycle plugins
 	&build.Command{},
 	&dev.Command{},
 	&test.Command{},
 	&fix.Command{},
 	&generate.Command{},
+	&pop.Command{},
+
+	// Builders
 	&cli.Builder{},
+	&standard.Builder{},
+
+	// Fixers
+	&standard.Fixer{},
+	&pop.Fixer{},
+
+	// Generators
+	&ox.Generator{},
+
+	// Testers
+	&pop.Tester{},
+	&standard.Tester{},
 }

@@ -16,7 +16,7 @@ var (
 )
 
 type Plugin struct {
-	migrators []Migrator
+	subcommands []plugins.Command
 }
 
 //HelpText resturns the help Text of build function
@@ -32,35 +32,41 @@ func (m *Plugin) ParentName() string {
 	return "pop"
 }
 
-func (m *Plugin) SubcommandName() string {
-	return "migrate"
-}
-
 func (m *Plugin) Run(ctx context.Context, root string, args []string) error {
-
 	if len(args) < 2 {
 		return ErrNotEnoughArgs
 	}
 
 	name := args[1]
-	for _, mig := range m.migrators {
-		if mig.CommandName() != name {
-			continue
+	for _, mig := range m.subcommands {
+		if mig.Name() == name {
+			return mig.Run(ctx, root, args)
 		}
 
-		return mig.RunMigrations(ctx, root, args)
+		// if cm := mig.(plugins.CommandNamer); cm.CommandName() == name {
+		// 	return mig.Run(ctx, root, args)
+		// }
+
 	}
 
 	return ErrInvalidInstruction
 }
 
-func (m *Plugin) Receive(plugins []plugins.Plugin) {
-	for _, plugin := range plugins {
-		pl, ok := plugin.(Migrator)
+func (m *Plugin) Receive(pls []plugins.Plugin) {
+	for _, plugin := range pls {
+		pl, ok := plugin.(plugins.Command)
 		if !ok {
 			continue
 		}
 
-		m.migrators = append(m.migrators, pl)
+		if pl.ParentName() != m.Name() {
+			continue
+		}
+
+		m.subcommands = append(m.subcommands, pl)
 	}
+}
+
+func (m *Plugin) Subcommands() []plugins.Command {
+	return m.subcommands
 }

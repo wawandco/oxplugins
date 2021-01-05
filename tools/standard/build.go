@@ -5,14 +5,32 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/spf13/pflag"
+	"github.com/wawandco/oxpecker/plugins"
 	"github.com/wawandco/oxplugins/internal/info"
 )
 
+var (
+	// These are the interfaces we know that this
+	// plugin must satisfy for its correct functionality
+	_ plugins.Plugin     = (*Builder)(nil)
+	_ plugins.FlagParser = (*Builder)(nil)
+)
+
+type Builder struct {
+	output    string
+	buildTags []string
+	static    bool
+	flags     *pflag.FlagSet
+}
+
+func (b Builder) Name() string {
+	return "standard/builder"
+}
+
 // Build runs the Go compiler to generate the desired binary. Assuming the
 // Go executable installed and can be invoked with `go`.
-//
-// IMPORTANT: it uses the static build flags.
-func (g *Plugin) Build(ctx context.Context, root string, args []string) error {
+func (g *Builder) Build(ctx context.Context, root string, args []string) error {
 	buildArgs, err := g.composeBuildArgs()
 	if err != nil {
 		return err
@@ -26,7 +44,21 @@ func (g *Plugin) Build(ctx context.Context, root string, args []string) error {
 	return cmd.Run()
 }
 
-func (g *Plugin) composeBuildArgs() ([]string, error) {
+// ParseFlags
+func (b *Builder) ParseFlags(args []string) {
+	b.flags = pflag.NewFlagSet(b.Name(), pflag.ContinueOnError)
+	b.flags.StringVarP(&b.output, "output", "o", "", "the path the binary will be generated at")
+	b.flags.StringSliceVarP(&b.buildTags, "tags", "", []string{}, "tags to pass the go build command")
+	b.flags.BoolVar(&b.static, "static", true, `build a static binary using  --ldflags '-linkmode external -extldflags "-static"'`)
+	b.flags.Parse(args) //nolint:errcheck,we don't care hence the flag
+}
+
+// ParseFlags
+func (b *Builder) Flags() *pflag.FlagSet {
+	return b.flags
+}
+
+func (g *Builder) composeBuildArgs() ([]string, error) {
 	name, err := info.BuildName()
 	if err != nil {
 		return []string{}, err
@@ -47,15 +79,15 @@ func (g *Plugin) composeBuildArgs() ([]string, error) {
 	if g.static {
 		buildArgs = append(buildArgs, static...)
 	}
-	//o
+
+	// output
 	o := []string{
 		"-o",
 		g.binaryOutput(name),
 	}
 	buildArgs = append(buildArgs, o...)
 
-	// add the build
-
+	// add the build tags
 	if len(g.buildTags) != 0 {
 		buildArgs = append(buildArgs, "-tags")
 		buildArgs = append(buildArgs, g.buildTags...)
@@ -68,7 +100,7 @@ func (g *Plugin) composeBuildArgs() ([]string, error) {
 
 // binaryOutput considers the output passed to
 // use it or default to bin/name.
-func (g *Plugin) binaryOutput(name string) string {
+func (g *Builder) binaryOutput(name string) string {
 	output := "bin/" + name
 	if g.output != "" {
 		output = g.output

@@ -7,7 +7,7 @@ import (
 )
 
 func Test_RunBeforeTest(t *testing.T) {
-	p := &Plugin{}
+	p := &Tester{}
 	ctx := context.Background()
 	err := p.RunBeforeTest(ctx, "", []string{})
 

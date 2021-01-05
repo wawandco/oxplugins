@@ -2,38 +2,40 @@ package migrate
 
 import (
 	"context"
-	"os"
+	"io"
 
+	"github.com/gobuffalo/packd"
 	"github.com/gobuffalo/pop/v5"
 	"github.com/spf13/pflag"
+	"github.com/wawandco/oxpecker/plugins"
 )
 
 type MigrateUp struct {
-	configFile     string
+	configFile io.Reader
+	migrations packd.Walkable
+
 	connectionName string
-	migrationsPath string
 	steps          int
 	flags          *pflag.FlagSet
 }
 
 func (mu MigrateUp) Name() string {
-	return "migrate/up"
+	return "up"
 }
 
-func (mu MigrateUp) CommandName() string {
-	return "up"
+func (mu MigrateUp) ParentName() string {
+	return "migrate"
+}
+
+func (mu MigrateUp) HelpText() string {
+	return "Runs migrations up passed steps, all by default"
 }
 
 // Run will run migrations on the current folder, it will look for the
 // migrations folder and attempt to run the migrations using internal
 // pop tooling
-func (mu *MigrateUp) RunMigrations(ctx context.Context, root string, args []string) error {
-	cb, err := os.OpenFile(mu.configFile, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		return err
-	}
-
-	err = pop.LoadFrom(cb)
+func (mu *MigrateUp) Run(ctx context.Context, root string, args []string) error {
+	err := pop.LoadFrom(mu.configFile)
 	if err != nil {
 		return err
 	}
@@ -43,7 +45,7 @@ func (mu *MigrateUp) RunMigrations(ctx context.Context, root string, args []stri
 		return ErrCouldNotFindConnection
 	}
 
-	mig, err := pop.NewFileMigrator(mu.migrationsPath, conn)
+	mig, err := pop.NewMigrationBox(mu.migrations, conn)
 	if err != nil {
 		return err
 	}
@@ -53,14 +55,18 @@ func (mu *MigrateUp) RunMigrations(ctx context.Context, root string, args []stri
 
 func (mu *MigrateUp) ParseFlags(args []string) {
 	mu.flags = pflag.NewFlagSet(mu.Name(), pflag.ContinueOnError)
-
 	mu.flags.StringVarP(&mu.connectionName, "conn", "", "development", "the name of the connection to use")
-	mu.flags.StringVarP(&mu.migrationsPath, "folder", "", "./migrations", "the path to the migrations")
-	mu.flags.StringVarP(&mu.configFile, "config", "", "config/database.yml", "direction to run the migrations to")
 	mu.flags.IntVarP(&mu.steps, "steps", "s", 0, "how many migrations to run")
 	mu.flags.Parse(args) //nolint:errcheck,we don't care hence the flag
 }
 
 func (mu *MigrateUp) Flags() *pflag.FlagSet {
 	return mu.flags
+}
+
+func UpPlugin(configFile io.Reader, migrations packd.Walkable) plugins.Plugin {
+	return &MigrateUp{
+		configFile: configFile,
+		migrations: migrations,
+	}
 }

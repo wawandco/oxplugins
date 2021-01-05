@@ -7,11 +7,17 @@ import (
 	"os/exec"
 )
 
-func (b *Plugin) RunBeforeTest(ctx context.Context, root string, args []string) error {
+type Tester struct{}
+
+func (t Tester) Name() string {
+	return "standard/tester"
+}
+
+func (b *Tester) RunBeforeTest(ctx context.Context, root string, args []string) error {
 	return os.Setenv("GO_ENV", "test")
 }
 
-func (p *Plugin) Test(ctx context.Context, root string, args []string) error {
+func (p *Tester) Test(ctx context.Context, root string, args []string) error {
 	fmt.Println(">>> Running Tests")
 
 	cargs := []string{
