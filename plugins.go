@@ -8,6 +8,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/fix"
 	"github.com/wawandco/oxplugins/lifecycle/generate"
 	"github.com/wawandco/oxplugins/lifecycle/test"
+	"github.com/wawandco/oxplugins/tools/grift"
 	"github.com/wawandco/oxplugins/tools/ox"
 	"github.com/wawandco/oxplugins/tools/pop"
 	"github.com/wawandco/oxplugins/tools/refresh"
@@ -32,6 +33,7 @@ var Base = []plugins.Plugin{
 	&fix.Command{},
 	&generate.Command{},
 	&pop.Command{},
+	&grift.Command{},
 
 	// Builders
 	&cli.Builder{},

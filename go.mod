@@ -6,6 +6,7 @@ require (
 	github.com/gobuffalo/packd v1.0.0
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gobuffalo/pop/v5 v5.3.1
+	github.com/markbates/grift v1.5.0
 	github.com/markbates/refresh v1.11.1
 	github.com/rogpeppe/go-internal v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5
