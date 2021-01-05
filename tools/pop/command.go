@@ -9,14 +9,34 @@ import (
 )
 
 // Ensuring pop.Plugin is a command
-var _ plugins.Command = (*Plugin)(nil)
+var (
+	_ plugins.Command        = (*Command)(nil)
+	_ plugins.Plugin         = (*Command)(nil)
+	_ plugins.HelpTexter     = (*Command)(nil)
+	_ plugins.PluginReceiver = (*Command)(nil)
+	_ plugins.Subcommander   = (*Command)(nil)
+)
+
+type Command struct {
+	// subcommands we will invoke depending on parameters
+	// these are filled when Receive is called.
+	subcommands []plugins.Command
+}
+
+func (p *Command) Name() string {
+	return "pop"
+}
+
+func (p *Command) ParentName() string {
+	return ""
+}
 
 //HelpText resturns the help Text of build function
-func (b Plugin) HelpText() string {
+func (b Command) HelpText() string {
 	return "provides commands for pop common tasks"
 }
 
-func (b *Plugin) Receive(plugins []plugins.Plugin) {
+func (b *Command) Receive(plugins []plugins.Plugin) {
 	for _, plugin := range plugins {
 		if mig, ok := plugin.(*migrate.Plugin); ok {
 			b.subcommands = append(b.subcommands, mig)
@@ -27,7 +47,7 @@ func (b *Plugin) Receive(plugins []plugins.Plugin) {
 	}
 }
 
-func (b *Plugin) Run(ctx context.Context, root string, args []string) error {
+func (b *Command) Run(ctx context.Context, root string, args []string) error {
 	if len(args) < 2 {
 		return errors.New("subcommand not found")
 	}
@@ -47,6 +67,6 @@ func (b *Plugin) Run(ctx context.Context, root string, args []string) error {
 	return nil
 }
 
-func (b *Plugin) Subcommands() []plugins.Command {
+func (b *Command) Subcommands() []plugins.Command {
 	return b.subcommands
 }

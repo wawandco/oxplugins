@@ -11,11 +11,11 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/fix"
 )
 
-// Err..
 var (
 	_ plugins.Plugin = (*Fixer)(nil)
 	_ fix.Fixer      = (*Fixer)(nil)
 
+	// Returned with database.yml does not exist
 	ErrDatabaseNotExist = errors.New(" database.yml does not exist")
 )
 
@@ -28,7 +28,7 @@ func (f Fixer) Name() string {
 
 // Fix moves the file "database.yml" to
 // "/config/database.yml". If the file
-// already exists it ignores the oparation
+// already exists it ignores the operation
 func (f Fixer) Fix(ctx context.Context, root string, args []string) error {
 	//search for file
 	_, err := f.fileExists(".")

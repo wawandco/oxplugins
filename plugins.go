@@ -24,16 +24,19 @@ var Base = []plugins.Plugin{
 	// Tools plugins.
 	&webpack.Plugin{},
 	&refresh.Plugin{},
-	&pop.Plugin{},
+	&yarn.Plugin{},
+
+	// Pop
+	&pop.Command{},
+	&pop.Fixer{},
+	&pop.Tester{},
 	&migrate.Plugin{},
 	&migrate.MigrateUp{},
 	&migrate.MigrateDown{},
-	&standard.Plugin{},
-	&yarn.Plugin{},
 
 	// Fixers
-	&pop.Fixer{},
 	&standard.Fixer{},
+	&standard.Plugin{},
 
 	// Generators
 	&ox.Generator{},
