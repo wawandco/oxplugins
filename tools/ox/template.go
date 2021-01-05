@@ -22,11 +22,18 @@ func main() {
   	pwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
-  	}
+	}
+	  
+	// building migrator plugins from config and migrations boxes.
+	migrators, err := migrate.Plugins({{.Name}}.Config, {{.Name}}.Migrations)
+	if err != nil {
+	 	log.Fatal(err)
+	}
     
 	cl := cli.New()
 	// append your plugins here
 	cl.Plugins = append(cl.Plugins, oxplugins.Base...)
+	cl.Plugins = append(cl.Plugins, migrators...)
     
     err = cl.Run(ctx, pwd, os.Args)
 	if err != nil {
