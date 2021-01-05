@@ -43,10 +43,17 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return err
 	}
 
+	module, err := info.ModuleName()
+	if err != nil {
+		return err
+	}
+
 	data := struct {
-		Name string
+		Name   string
+		Module string
 	}{
-		Name: name,
+		Name:   name,
+		Module: module,
 	}
 
 	var tpl bytes.Buffer

@@ -8,6 +8,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"{{.Module}}"
+	_ "{{.Module}}/app/tasks"
+
 	"github.com/wawandco/oxpecker/cli"
 	"github.com/wawandco/oxplugins"
 )
