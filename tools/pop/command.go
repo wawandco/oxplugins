@@ -38,7 +38,7 @@ func (b Command) HelpText() string {
 
 func (b *Command) Receive(plugins []plugins.Plugin) {
 	for _, plugin := range plugins {
-		if mig, ok := plugin.(*migrate.Plugin); ok {
+		if mig, ok := plugin.(*migrate.Command); ok {
 			b.subcommands = append(b.subcommands, mig)
 			continue
 		}
