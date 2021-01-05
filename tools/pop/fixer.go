@@ -52,7 +52,6 @@ func (f Fixer) Fix(ctx context.Context, root string, args []string) error {
 
 // moveFile moves the database.yml file to
 // a config/ directory
-
 func (f Fixer) moveFile() error {
 
 	err := os.Rename("database.yml", "config/database.yml")
