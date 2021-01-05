@@ -14,6 +14,7 @@ import (
 
 	"github.com/wawandco/oxpecker/cli"
 	"github.com/wawandco/oxplugins"
+	"github.com/wawandco/oxplugins/tools/pop/migrate"
 )
 
 // main function for the tooling cli, will be invoked by Oxpecker
