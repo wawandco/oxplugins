@@ -9,6 +9,7 @@ import (
 )
 
 type MigrateUp struct {
+	*Logger
 	migrations packd.Walkable
 
 	connectionName string
@@ -32,6 +33,8 @@ func (mu MigrateUp) HelpText() string {
 // migrations folder and attempt to run the migrations using internal
 // pop tooling
 func (mu *MigrateUp) Run(ctx context.Context, root string, args []string) error {
+	pop.SetLogger(mu.Log)
+
 	conn := pop.Connections[mu.connectionName]
 	if conn == nil {
 		return ErrCouldNotFindConnection
@@ -42,7 +45,12 @@ func (mu *MigrateUp) Run(ctx context.Context, root string, args []string) error 
 		return err
 	}
 
-	return mig.Up()
+	_, err = mig.UpTo(mu.steps)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (mu *MigrateUp) ParseFlags(args []string) {

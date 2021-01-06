@@ -67,6 +67,7 @@ func (m *Command) Receive(pls []plugins.Plugin) {
 }
 
 func Plugins(migrations packd.Box) []plugins.Plugin {
+
 	pl := []plugins.Plugin{
 		&Command{},
 		&MigrateUp{migrations: migrations},
