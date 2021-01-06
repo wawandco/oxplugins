@@ -2,16 +2,13 @@ package migrate
 
 import (
 	"context"
-	"io"
 
 	"github.com/gobuffalo/packd"
 	"github.com/gobuffalo/pop/v5"
 	"github.com/spf13/pflag"
-	"github.com/wawandco/oxpecker/plugins"
 )
 
 type MigrateUp struct {
-	configFile io.Reader
 	migrations packd.Walkable
 
 	connectionName string
@@ -35,11 +32,6 @@ func (mu MigrateUp) HelpText() string {
 // migrations folder and attempt to run the migrations using internal
 // pop tooling
 func (mu *MigrateUp) Run(ctx context.Context, root string, args []string) error {
-	err := pop.LoadFrom(mu.configFile)
-	if err != nil {
-		return err
-	}
-
 	conn := pop.Connections[mu.connectionName]
 	if conn == nil {
 		return ErrCouldNotFindConnection
@@ -62,11 +54,4 @@ func (mu *MigrateUp) ParseFlags(args []string) {
 
 func (mu *MigrateUp) Flags() *pflag.FlagSet {
 	return mu.flags
-}
-
-func UpPlugin(configFile io.Reader, migrations packd.Walkable) plugins.Plugin {
-	return &MigrateUp{
-		configFile: configFile,
-		migrations: migrations,
-	}
 }

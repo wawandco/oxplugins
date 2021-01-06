@@ -66,25 +66,12 @@ func (m *Command) Receive(pls []plugins.Plugin) {
 	}
 }
 
-func Plugins(config, migrations packd.Box) ([]plugins.Plugin, error) {
-	// Finding database.yml inside the config box
-	file, err := config.Open("database.yml")
-	if err != nil {
-		return nil, err
-	}
-
+func Plugins(migrations packd.Box) []plugins.Plugin {
 	pl := []plugins.Plugin{
 		&Command{},
-		&MigrateUp{
-			configFile: file,
-			migrations: migrations,
-		},
-
-		&MigrateDown{
-			configFile: file,
-			migrations: migrations,
-		},
+		&MigrateUp{migrations: migrations},
+		&MigrateDown{migrations: migrations},
 	}
 
-	return pl, nil
+	return pl
 }

@@ -2,16 +2,13 @@ package migrate
 
 import (
 	"context"
-	"io"
 
 	"github.com/gobuffalo/packd"
 	"github.com/gobuffalo/pop/v5"
 	"github.com/spf13/pflag"
-	"github.com/wawandco/oxpecker/plugins"
 )
 
 type MigrateDown struct {
-	configFile io.Reader
 	migrations packd.Walkable
 
 	connectionName string
@@ -35,11 +32,6 @@ func (mu MigrateDown) ParentName() string {
 // migrations folder and attempt to run the migrations using internal
 // pop tooling
 func (mu *MigrateDown) Run(ctx context.Context, root string, args []string) error {
-	err := pop.LoadFrom(mu.configFile)
-	if err != nil {
-		return err
-	}
-
 	conn := pop.Connections[mu.connectionName]
 	if conn == nil {
 		return ErrCouldNotFindConnection
@@ -64,11 +56,4 @@ func (mu *MigrateDown) ParseFlags(args []string) {
 
 func (mu *MigrateDown) Flags() *pflag.FlagSet {
 	return mu.flags
-}
-
-func DownPlugin(configFile io.Reader, migrations packd.Walkable) plugins.Plugin {
-	return &MigrateDown{
-		configFile: configFile,
-		migrations: migrations,
-	}
 }
