@@ -41,7 +41,6 @@ var Base = []plugins.Plugin{
 
 	// Fixers
 	&standard.Fixer{},
-	&pop.Fixer{},
 
 	// Generators
 	&ox.Generator{},

@@ -3,7 +3,6 @@ package pop
 import (
 	"context"
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/gobuffalo/pop/v5"
@@ -16,11 +15,6 @@ func (p *Tester) Name() string {
 }
 
 func (p *Tester) RunBeforeTest(ctx context.Context, root string, args []string) error {
-	_, err := os.Stat(filepath.Join(root, "config", "database.yml"))
-	if err != nil {
-		return err
-	}
-
 	db, err := pop.Connect("test")
 	if err != nil {
 		return err
