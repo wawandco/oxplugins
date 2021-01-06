@@ -3,12 +3,15 @@ package pop
 import (
 	"context"
 	"fmt"
-	"path/filepath"
 
 	"github.com/gobuffalo/pop/v5"
+	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/tools/pop/migrate"
 )
 
-type Tester struct{}
+type Tester struct {
+	migrator migrate.Migrator
+}
 
 func (p *Tester) Name() string {
 	return "pop/tester"
@@ -31,13 +34,24 @@ func (p *Tester) RunBeforeTest(ctx context.Context, root string, args []string) 
 		return err
 	}
 
-	// Running migrations
-	fmt.Println(">>> Running migrations")
-	ms := filepath.Join(root, "migrations")
-	fm, err := pop.NewFileMigrator(ms, db)
-	if err != nil {
-		return err
+	if p.migrator == nil {
+		return nil
 	}
 
-	return fm.Up()
+	// Running migrations
+	fmt.Println(">>> Running migrations")
+	p.migrator.SetConn("test")
+	return p.migrator.Run(ctx, root, args)
+}
+
+func (p *Tester) Receive(pls []plugins.Plugin) {
+	for _, plugin := range pls {
+		c, ok := plugin.(migrate.Migrator)
+		if !ok || c.Direction() != "up" {
+			continue
+		}
+
+		p.migrator = c
+		break
+	}
 }

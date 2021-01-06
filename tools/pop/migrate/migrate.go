@@ -17,6 +17,13 @@ var (
 	ErrInvalidInstruction     = errors.New("invalid instruction for migrate command")
 )
 
+type Migrator interface {
+	plugins.Command
+
+	Direction() string
+	SetConn(string)
+}
+
 type Command struct {
 	subcommands []plugins.Command
 }

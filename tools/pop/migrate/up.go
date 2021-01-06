@@ -21,6 +21,14 @@ func (mu MigrateUp) Name() string {
 	return "up"
 }
 
+func (mu MigrateUp) Direction() string {
+	return "up"
+}
+
+func (mu *MigrateUp) SetConn(conn string) {
+	mu.connectionName = conn
+}
+
 func (mu MigrateUp) ParentName() string {
 	return "migrate"
 }
