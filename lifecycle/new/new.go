@@ -1,24 +1,17 @@
 package new
 
-import "github.com/wawandco/oxpecker/plugins"
-
-
-package dev
-
 import (
 	"context"
-	"fmt"
-	"sync"
 
 	"github.com/wawandco/oxpecker/plugins"
 )
 
 var _ plugins.Command = (*Command)(nil)
-var _ plugins.FlagParser = (*Command)(nil)
+var _ plugins.PluginReceiver = (*Command)(nil)
 
 // Command to generate New applications.
 type Command struct {
-	initializers []Initializer
+	initializers      []Initializer
 	afterInitializers []AfterInitializer
 }
 
@@ -54,17 +47,18 @@ func (d *Command) Run(ctx context.Context, root string, args []string) error {
 
 	return nil
 }
+
 // Receive and store initializers
 func (d *Command) Receive(plugins []plugins.Plugin) {
 	for _, tool := range plugins {
 		i, ok := tool.(Initializer)
 		if ok {
-			d.developers = append(d.initializers, i)
+			d.initializers = append(d.initializers, i)
 		}
 
-		ai, ok = tool.(AfterInitializer)
+		ai, ok := tool.(AfterInitializer)
 		if ok {
-			d.developers = append(d.afterInitializers, ai)
+			d.afterInitializers = append(d.afterInitializers, ai)
 		}
 	}
 }
