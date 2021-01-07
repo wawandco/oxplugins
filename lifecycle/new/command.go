@@ -47,14 +47,14 @@ func (d *Command) Run(ctx context.Context, root string, args []string) error {
 	}
 
 	for _, ini := range d.initializers {
-		err := ini.Initialize(ctx, root, args)
+		err := ini.Initialize(ctx, path, args)
 		if err != nil {
 			return err
 		}
 	}
 
 	for _, aini := range d.afterInitializers {
-		err := aini.AfterInitialize(ctx, root, args)
+		err := aini.AfterInitialize(ctx, path, args)
 		if err != nil {
 			return err
 		}
