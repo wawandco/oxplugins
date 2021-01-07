@@ -53,7 +53,7 @@ func (i *Initializer) Initialize(ctx context.Context, root string, args []string
 			return (err)
 		}
 
-		file, err = os.OpenFile(root, os.O_RDWR, 0644)
+		_, err = os.OpenFile(root, os.O_RDWR, 0644)
 		if err != nil {
 			return (err)
 		}
