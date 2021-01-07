@@ -7,9 +7,6 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 )
 
-// For testing purposes
-var int = 0
-
 var _ new.Initializer = (*Tinit)(nil)
 var _ new.AfterInitializer = (*Tinit)(nil)
 
