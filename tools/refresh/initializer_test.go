@@ -39,11 +39,10 @@ func TestInitializer(t *testing.T) {
 		}
 
 		rootYml := root + "/.buffalo.dev.yml"
-		file, err := os.Create(rootYml)
+		_, err = os.Create(rootYml)
 		if err != nil {
 			t.Fatalf("Problem creating file, %v", err)
 		}
-		file.Close()
 
 		i := Initializer{}
 
