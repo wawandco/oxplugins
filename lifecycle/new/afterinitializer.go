@@ -15,5 +15,5 @@ type AfterInitializer interface {
 
 	// AfterInitialize receives the context and the root folder where
 	// the application is being initialized.
-	AfterInitialize(context.Context, string) error
+	AfterInitialize(context.Context, string, []string) error
 }
