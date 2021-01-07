@@ -47,6 +47,9 @@ var Base = []plugins.Plugin{
 	// Generators
 	&ox.Generator{},
 
+	// Initializer
+	&refresh.Initializer{},
+
 	// Testers
 	&pop.Tester{},
 	&standard.Tester{},
