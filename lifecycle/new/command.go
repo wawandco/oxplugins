@@ -39,7 +39,7 @@ func (d *Command) Run(ctx context.Context, root string, args []string) error {
 		return ErrNoNameProvided
 	}
 
-	name := args[0]
+	name := d.FolderName(args)
 	path := filepath.Join(root, name)
 	err := os.MkdirAll(path, 0777)
 	if err != nil {
@@ -76,4 +76,7 @@ func (d *Command) Receive(plugins []plugins.Plugin) {
 			d.afterInitializers = append(d.afterInitializers, ai)
 		}
 	}
+}
+func (d *Command) FolderName(args []string) string {
+	return filepath.Base(args[0])
 }

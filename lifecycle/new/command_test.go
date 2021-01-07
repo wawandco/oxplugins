@@ -10,7 +10,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 )
 
-func TestInitializerRun(t *testing.T) {
+func TestRun(t *testing.T) {
 	root := t.TempDir()
 	err := os.Chdir(root)
 	if err != nil {
@@ -48,4 +48,24 @@ func TestInitializerRun(t *testing.T) {
 	if !tinit.afterCalled {
 		t.Errorf("should have called afterinitialize")
 	}
+}
+
+func TestFolderName(t *testing.T) {
+	tcases := []struct {
+		args     []string
+		expected string
+	}{
+		{[]string{"aaa"}, "aaa"},
+		{[]string{"something/aaa"}, "aaa"},
+		{[]string{"something\\aaa"}, "something\\aaa"},
+	}
+
+	pl := &new.Command{}
+	for _, tcase := range tcases {
+		name := pl.FolderName(tcase.args)
+		if name != tcase.expected {
+			t.Errorf("should return %v got %v", tcase.expected, name)
+		}
+	}
+
 }
