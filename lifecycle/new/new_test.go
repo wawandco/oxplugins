@@ -12,13 +12,16 @@ import (
 
 func TestInitializerRun(t *testing.T) {
 	root := t.TempDir()
-	os.Chdir(root)
+	err := os.Chdir(root)
+	if err != nil {
+		t.Error("could not change to temp directory")
+	}
 
 	pl := &new.Command{}
 	tinit := &Tinit{}
 	pl.Receive([]plugins.Plugin{tinit})
 
-	err := pl.Run(context.Background(), root, []string{})
+	err = pl.Run(context.Background(), root, []string{})
 	if err == nil {
 		t.Error("should return an error")
 	}
