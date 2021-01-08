@@ -20,7 +20,7 @@ func TestInitializer(t *testing.T) {
 		err = i.Initialize(context.Background(), root, []string{})
 
 		if err != nil {
-			t.Fatalf("error should be nill, got %v", err)
+			t.Fatalf("error should be nil, got %v", err)
 		}
 
 		_, err = os.Stat(root)
@@ -49,13 +49,7 @@ func TestInitializer(t *testing.T) {
 		err = i.Initialize(context.Background(), root, []string{})
 
 		if err != nil {
-			t.Fatalf("error should be nill, got %v", err)
-		}
-
-		_, err = os.Stat(root)
-
-		if os.IsNotExist(err) {
-			t.Fatalf("Did not create file ")
+			t.Fatalf("error should be nil, got %v", err)
 		}
 
 	})

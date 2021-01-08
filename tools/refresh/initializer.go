@@ -14,7 +14,7 @@ func (i Initializer) Name() string {
 
 func (i *Initializer) Initialize(ctx context.Context, root string, args []string) error {
 	// check for database.dev.yml file in root location
-	root = root + "/.buffalo.dev.yml"
+	rootYml := root + "/.buffalo.dev.yml"
 
 	content := `app_root: .
 	build_target_path : ./cmd/app
@@ -39,22 +39,26 @@ func (i *Initializer) Initialize(ctx context.Context, root string, args []string
 	enable_colors: true
 	log_name: ox`
 
-	if _, err := os.Stat(root); err == nil {
+	_, err := os.Stat(rootYml)
+	if err == nil {
 
 		fmt.Println(".buffalo.dev.yml file already exist")
 		return nil
 
-	} else if os.IsNotExist(err) {
+	}
+	if os.IsNotExist(err) {
 
 		// create file if it does not exist
-		file, err := os.Create(root)
+		file, err := os.Create(rootYml)
 
 		if err != nil {
+			fmt.Println("alo alo")
 			return (err)
 		}
 
-		_, err = os.OpenFile(root, os.O_RDWR, 0644)
+		_, err = os.OpenFile(rootYml, os.O_RDWR, 0644)
 		if err != nil {
+			fmt.Println("alo alo")
 			return (err)
 		}
 
@@ -67,8 +71,7 @@ func (i *Initializer) Initialize(ctx context.Context, root string, args []string
 
 		return nil
 
-	} else {
-		return err
-
 	}
+	return err
+
 }
