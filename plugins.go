@@ -9,6 +9,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/generate"
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
+	"github.com/wawandco/oxplugins/tools/flect"
 	"github.com/wawandco/oxplugins/tools/grift"
 	"github.com/wawandco/oxplugins/tools/ox"
 	"github.com/wawandco/oxplugins/tools/pop"
@@ -49,6 +50,7 @@ var Base = []plugins.Plugin{
 
 	// Initializer
 	&refresh.Initializer{},
+	&flect.Initializer{},
 
 	// Testers
 	&pop.Tester{},

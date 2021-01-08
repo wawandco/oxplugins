@@ -1,4 +1,4 @@
-package refresh
+package flect
 
 import (
 	"context"
@@ -9,40 +9,23 @@ import (
 type Initializer struct{}
 
 func (i Initializer) Name() string {
-	return "refresh/initializer"
+	return "flect/initializer"
 }
 
 func (i *Initializer) Initialize(ctx context.Context, root string, args []string) error {
-	// check for database.dev.yml file in root location
-	rootYml := root + "/.buffalo.dev.yml"
 
-	content := `app_root: .
-	build_target_path : ./cmd/app
-	ignored_folders:
-	- vendor
-	- log
-	- logs
-	- assets
-	- public
-	- grifts
-	- tmp
-	- bin
-	- node_modules
-	- .sass-cache
-	included_extensions:
-	- .go
-	- .env
-	build_path: bin
-	build_delay: 200ns
-	binary_name: tmp-build
-	command_flags: []
-	enable_colors: true
-	log_name: ox`
+	rootYml := root + "/inflections.yml"
+
+	content := `
+	{
+	  "singular": "plural"
+	}
+	`
 
 	_, err := os.Stat(rootYml)
 	if err == nil {
 
-		fmt.Println(".buffalo.dev.yml file already exist")
+		fmt.Println("inflections.yml file already exist ")
 		return nil
 
 	}
@@ -52,13 +35,11 @@ func (i *Initializer) Initialize(ctx context.Context, root string, args []string
 		file, err := os.Create(rootYml)
 
 		if err != nil {
-			fmt.Println("alo alo")
 			return (err)
 		}
 
 		_, err = os.OpenFile(rootYml, os.O_RDWR, 0644)
 		if err != nil {
-			fmt.Println("alo alo")
 			return (err)
 		}
 
@@ -72,6 +53,7 @@ func (i *Initializer) Initialize(ctx context.Context, root string, args []string
 		return nil
 
 	}
+
 	return err
 
 }

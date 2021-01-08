@@ -1,4 +1,4 @@
-package refresh
+package flect
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 )
 
 func TestInitializer(t *testing.T) {
-	t.Run("BuffaloFileDoesNotExist", func(t *testing.T) {
+	t.Run("InflectionsFileDoesNotExist", func(t *testing.T) {
 
 		root := t.TempDir()
 		err := os.Chdir(root)
@@ -30,7 +30,7 @@ func TestInitializer(t *testing.T) {
 		}
 
 	})
-	t.Run("BuffaloFileExist", func(t *testing.T) {
+	t.Run("inflectionFileExist", func(t *testing.T) {
 
 		root := t.TempDir()
 		err := os.Chdir(root)
@@ -38,7 +38,7 @@ func TestInitializer(t *testing.T) {
 			t.Error("could not change to temp directory")
 		}
 
-		rootYml := root + "/.buffalo.dev.yml"
+		rootYml := root + "/inflections.yml"
 		_, err = os.Create(rootYml)
 		if err != nil {
 			t.Fatalf("Problem creating file, %v", err)
@@ -49,7 +49,7 @@ func TestInitializer(t *testing.T) {
 		err = i.Initialize(context.Background(), root, []string{})
 
 		if err != nil {
-			t.Fatalf("error should be nil, got %v", err)
+			t.Fatalf("error should be type nil, got %v", err)
 		}
 
 	})
