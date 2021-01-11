@@ -26,7 +26,7 @@ func (p *Tester) RunBeforeTest(ctx context.Context, root string, args []string) 
 	fmt.Println(">>> Resetting Database")
 	err = db.Dialect.DropDB()
 	if err != nil {
-		fmt.Printf("could not drop `%v` database, continuing.", db.Dialect.Name())
+		fmt.Printf("could not drop `%v` database, continuing\n", db.Dialect)
 	}
 
 	err = db.Dialect.CreateDB()
