@@ -74,7 +74,7 @@ func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
 	return runArgs, nil
 }
 
-func NewLiquibasePlugin(connURL string) *Command {
+func NewPlugin(connURL string) *Command {
 	return &Command{
 		connectionURL: connURL,
 	}
