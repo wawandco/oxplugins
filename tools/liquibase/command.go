@@ -8,14 +8,14 @@ import (
 	"os/exec"
 	"regexp"
 
-	"github.com/gobuffalo/pop"
 	"github.com/wawandco/oxpecker/plugins"
 )
 
 var _ plugins.Command = (*Command)(nil)
+var _ plugins.HelpTexter = (*Command)(nil)
 
 type Command struct {
-	connections map[string]*pop.Connection
+	connections map[string]URLProvider
 }
 
 func (lb Command) Name() string {
@@ -85,7 +85,7 @@ func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
 	return runArgs, nil
 }
 
-func NewPlugin(conns map[string]*pop.Connection) *Command {
+func NewPlugin(conns map[string]URLProvider) *Command {
 	return &Command{
 		connections: conns,
 	}
