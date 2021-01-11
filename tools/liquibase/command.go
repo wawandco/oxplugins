@@ -7,14 +7,13 @@ import (
 	"os/exec"
 	"regexp"
 
-	"github.com/gobuffalo/pop/v5"
 	"github.com/wawandco/oxpecker/plugins"
 )
 
-var _ plugins.Command = (*Liquibase)(nil)
+var _ plugins.Command = (*Command)(nil)
 
 type Command struct {
-	connections []pop.ConnectionDetails
+	connectionURL string
 }
 
 func (lb Command) Name() string {
@@ -26,23 +25,19 @@ func (lb Command) ParentName() string {
 }
 
 func (lb *Command) Run(ctx context.Context, root string, args []string) error {
-	return lb.update(currentEnv())
+	currentEnv := os.Getenv("GO_ENV")
+	if currentEnv == "" {
+		currentEnv = "development"
+	}
+
+	return lb.update(currentEnv)
 }
 
 func (lb *Command) RunBeforeTest(ctx context.Context, root string, args []string) error {
 	return lb.update("test")
 }
 
-func (lb *Command) currentEnv() string {
-	env := os.Getenv("GO_ENV")
-	if env == "" {
-		return "development"
-	}
-
-	return env
-}
-
-func (lb *Command) update(env string) error {
+func (lb Command) update(env string) error {
 	runArgs, err := lb.buildRunArgsFor(env)
 	if err != nil {
 		return err
@@ -61,16 +56,9 @@ func (lb *Command) update(env string) error {
 	return c.Run()
 }
 
-func (lb *Command) buildRunArgsFor(environment string) ([]string, error) {
-	env := lb.connections[environment]
-	if env == nil {
-		return []string{}, fmt.Errorf("could not find %v environment in your database.yml", environment)
-	}
-
-	originalURL := env.URL()
-
+func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
 	r := regexp.MustCompile(`postgres:\/\/(?P<username>.*):(?P<password>.*)@(?P<host>.*):(?P<port>.*)\/(?P<database>.*)\?(?P<extras>.*)`)
-	match := r.FindStringSubmatch(originalURL)
+	match := r.FindStringSubmatch(lb.connectionURL)
 	if match == nil {
 		return []string{}, fmt.Errorf("could not convert %v url into liquibase", environment)
 	}
@@ -86,8 +74,8 @@ func (lb *Command) buildRunArgsFor(environment string) ([]string, error) {
 	return runArgs, nil
 }
 
-func NewCommand(details []pop.ConnectionDetails) *Command {
+func NewLiquibasePlugin(connURL string) *Command {
 	return &Command{
-		connections: details,
+		connectionURL: connURL,
 	}
 }

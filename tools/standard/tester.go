@@ -19,7 +19,6 @@ func (b *Tester) RunBeforeTest(ctx context.Context, root string, args []string) 
 
 func (p *Tester) Test(ctx context.Context, root string, args []string) error {
 	fmt.Println(">>> Running Tests")
-
 	cargs := []string{
 		"test",
 	}
