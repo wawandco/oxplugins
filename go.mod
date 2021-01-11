@@ -7,7 +7,6 @@ require (
 	github.com/gobuffalo/envy v1.9.0
 	github.com/gobuffalo/packd v1.0.0
 	github.com/gobuffalo/packr/v2 v2.8.1
-	github.com/gobuffalo/pop v4.12.2+incompatible
 	github.com/gobuffalo/pop/v5 v5.3.1
 	github.com/markbates/grift v1.5.0
 	github.com/markbates/refresh v1.11.1
