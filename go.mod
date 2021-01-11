@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/fatih/color v1.9.0
+	github.com/gobuffalo/envy v1.9.0
 	github.com/gobuffalo/packd v1.0.0
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gobuffalo/pop/v5 v5.3.1
