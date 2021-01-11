@@ -2,18 +2,20 @@ package liquibase
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"regexp"
 
+	"github.com/gobuffalo/pop"
 	"github.com/wawandco/oxpecker/plugins"
 )
 
 var _ plugins.Command = (*Command)(nil)
 
 type Command struct {
-	connectionURL string
+	connections map[string]*pop.Connection
 }
 
 func (lb Command) Name() string {
@@ -22,6 +24,10 @@ func (lb Command) Name() string {
 
 func (lb Command) ParentName() string {
 	return ""
+}
+
+func (lb Command) HelpText() string {
+	return "runs liquibase command to update database with current GO_ENV"
 }
 
 func (lb *Command) Run(ctx context.Context, root string, args []string) error {
@@ -57,8 +63,13 @@ func (lb Command) update(env string) error {
 }
 
 func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
+	conn := lb.connections[environment]
+	if conn == nil {
+		return []string{}, errors.New("connection not found")
+	}
+
 	r := regexp.MustCompile(`postgres:\/\/(?P<username>.*):(?P<password>.*)@(?P<host>.*):(?P<port>.*)\/(?P<database>.*)\?(?P<extras>.*)`)
-	match := r.FindStringSubmatch(lb.connectionURL)
+	match := r.FindStringSubmatch(conn.URL())
 	if match == nil {
 		return []string{}, fmt.Errorf("could not convert %v url into liquibase", environment)
 	}
@@ -74,8 +85,8 @@ func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
 	return runArgs, nil
 }
 
-func NewPlugin(connURL string) *Command {
+func NewPlugin(conns map[string]*pop.Connection) *Command {
 	return &Command{
-		connectionURL: connURL,
+		connections: conns,
 	}
 }
