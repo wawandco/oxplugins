@@ -22,11 +22,10 @@ func (i *Initializer) Initialize(ctx context.Context, root string, arg []string)
 
 	rootDoc := root + "/.dockerignore"
 	rootFile := filepath.Join(root, "Dockerfile")
-	f, err := os.Create(rootFile)
+	_, err := os.Create(rootFile)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
 
 	contentIgnore := `.git
 	node_modules/

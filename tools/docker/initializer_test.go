@@ -47,6 +47,9 @@ func TestInitilizer(t *testing.T) {
 
 		rootFile := filepath.Join(root, "Dockerfile")
 		_, err = os.Create(rootFile)
+		if err != nil {
+			t.Fatalf("Error creating the file, %v", err)
+		}
 
 		i := Initializer{}
 
@@ -70,6 +73,10 @@ func TestInitilizer(t *testing.T) {
 
 		rootdoc := filepath.Join(root, ".dockerignore")
 		_, err = os.Create(rootdoc)
+
+		if err != nil {
+			t.Fatalf("Error creating the file, %v", err)
+		}
 
 		i := Initializer{}
 
