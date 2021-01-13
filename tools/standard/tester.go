@@ -26,6 +26,8 @@ func (p *Tester) Test(ctx context.Context, root string, args []string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
+	fmt.Printf("Running: %v\n", strings.Join(cmd.Args, " "))
+
 	return cmd.Run()
 }
 
