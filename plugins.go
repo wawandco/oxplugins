@@ -3,7 +3,6 @@ package oxplugins
 import (
 	"github.com/wawandco/oxpecker/plugins"
 	"github.com/wawandco/oxplugins/lifecycle/build"
-	"github.com/wawandco/oxplugins/lifecycle/cli"
 	"github.com/wawandco/oxplugins/lifecycle/dev"
 	"github.com/wawandco/oxplugins/lifecycle/fix"
 	"github.com/wawandco/oxplugins/lifecycle/generate"
@@ -39,7 +38,6 @@ var Base = []plugins.Plugin{
 	&grift.Command{},
 
 	// Builders
-	&cli.Builder{},
 	&standard.Builder{},
 
 	// Fixers
