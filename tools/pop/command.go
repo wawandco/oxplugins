@@ -3,6 +3,7 @@ package pop
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/wawandco/oxpecker/plugins"
 	"github.com/wawandco/oxplugins/tools/pop/migrate"
@@ -15,6 +16,8 @@ var (
 	_ plugins.HelpTexter     = (*Command)(nil)
 	_ plugins.PluginReceiver = (*Command)(nil)
 	_ plugins.Subcommander   = (*Command)(nil)
+
+	ErrCommandNotFound = errors.New("subcommand not found")
 )
 
 type Command struct {
@@ -49,7 +52,7 @@ func (b *Command) Receive(plugins []plugins.Plugin) {
 
 func (b *Command) Run(ctx context.Context, root string, args []string) error {
 	if len(args) < 2 {
-		return errors.New("subcommand not found")
+		return ErrCommandNotFound
 	}
 
 	for _, cm := range b.subcommands {
@@ -64,6 +67,7 @@ func (b *Command) Run(ctx context.Context, root string, args []string) error {
 		return cm.Run(ctx, root, args[1:])
 	}
 
+	fmt.Printf("did not find %v subcommand, try ox help pop.\n", args[1])
 	return nil
 }
 

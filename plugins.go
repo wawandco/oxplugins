@@ -35,7 +35,6 @@ var Base = []plugins.Plugin{
 	&test.Command{},
 	&fix.Command{},
 	&generate.Command{},
-	&pop.Command{},
 	&new.Command{},
 	&grift.Command{},
 
