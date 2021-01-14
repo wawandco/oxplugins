@@ -54,6 +54,8 @@ func (d *ResetCommand) Run(ctx context.Context, root string, args []string) erro
 	return resetter.CreateDB()
 }
 
+// RunBeforeTests will be invoked to reset the test database before
+// tests run.
 func (d *ResetCommand) RunBeforeTest(ctx context.Context, root string, args []string) error {
 	conn := d.connections["test"]
 	if conn == nil {
