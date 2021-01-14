@@ -1,6 +1,8 @@
 package migrate
 
 import (
+	"context"
+
 	"github.com/gobuffalo/pop/v5"
 )
 
@@ -24,10 +26,10 @@ func (mu *Command) RunUp() error {
 	return err
 }
 
-func (mu *Command) RunBeforeTest() error {
+func (mu *Command) RunBeforeTest(ctx context.Context, root string, args []string) error {
 	pop.SetLogger(mu.Log)
 
-	conn := pop.Connections[mu.connectionName]
+	conn := pop.Connections["test"]
 	if conn == nil {
 		return ErrCouldNotFindConnection
 	}
