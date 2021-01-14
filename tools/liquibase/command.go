@@ -8,6 +8,8 @@ import (
 	"os/exec"
 	"regexp"
 
+	pop4 "github.com/gobuffalo/pop"
+	pop5 "github.com/gobuffalo/pop/v5"
 	"github.com/wawandco/oxpecker/plugins"
 )
 
@@ -23,11 +25,11 @@ func (lb Command) Name() string {
 }
 
 func (lb Command) ParentName() string {
-	return ""
+	return "db"
 }
 
 func (lb Command) HelpText() string {
-	return "runs liquibase command to update database with current GO_ENV"
+	return "runs Liquibase command to update database with current GO_ENV"
 }
 
 func (lb *Command) Run(ctx context.Context, root string, args []string) error {
@@ -71,7 +73,7 @@ func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
 	r := regexp.MustCompile(`postgres:\/\/(?P<username>.*):(?P<password>.*)@(?P<host>.*):(?P<port>.*)\/(?P<database>.*)\?(?P<extras>.*)`)
 	match := r.FindStringSubmatch(conn.URL())
 	if match == nil {
-		return []string{}, fmt.Errorf("could not convert %v url into liquibase", environment)
+		return []string{}, fmt.Errorf("could not convert `%v` url into Liquibase", environment)
 	}
 
 	URL := fmt.Sprintf("jdbc:postgresql://%v:%v/%v?%v", match[3], match[4], match[5], match[6])
@@ -85,8 +87,30 @@ func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
 	return runArgs, nil
 }
 
-func NewPlugin(conns map[string]URLProvider) *Command {
-	return &Command{
-		connections: conns,
+func NewPlugin(conns interface{}) *Command {
+	switch v := conns.(type) {
+	case map[string]*pop4.Connection:
+		result := map[string]URLProvider{}
+		for k, conn := range v {
+			result[k] = conn
+		}
+
+		return &Command{
+			connections: result,
+		}
+	case map[string]*pop5.Connection:
+		result := map[string]URLProvider{}
+		for k, conn := range v {
+			result[k] = conn
+		}
+
+		return &Command{
+			connections: result,
+		}
+
+	default:
+		fmt.Println("Liquibase plugin ONLY receives pop v4 and v5 connections")
 	}
+
+	return nil
 }
