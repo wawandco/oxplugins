@@ -9,9 +9,11 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/generate"
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
+	"github.com/wawandco/oxplugins/tools/docker"
 	"github.com/wawandco/oxplugins/tools/envy"
 	"github.com/wawandco/oxplugins/tools/flect"
 	"github.com/wawandco/oxplugins/tools/grift"
+	"github.com/wawandco/oxplugins/tools/liquibase"
 	"github.com/wawandco/oxplugins/tools/ox"
 	"github.com/wawandco/oxplugins/tools/pop"
 	"github.com/wawandco/oxplugins/tools/refresh"
@@ -48,10 +50,12 @@ var Base = []plugins.Plugin{
 
 	// Generators
 	&ox.Generator{},
+	&liquibase.Generator{},
 
 	// Initializer
 	&refresh.Initializer{},
 	&flect.Initializer{},
+	&docker.Initializer{},
 
 	// Testers
 	&standard.Tester{},
