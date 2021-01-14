@@ -42,7 +42,7 @@ func (m *Command) ParentName() string {
 
 func (m *Command) Run(ctx context.Context, root string, args []string) error {
 	if len(args) < 3 {
-		return ErrNotEnoughArgs
+		return m.RunUp()
 	}
 
 	direction := args[2]
