@@ -109,7 +109,7 @@ func NewPlugin(conns interface{}) *Command {
 		}
 
 	default:
-		fmt.Println("DB plugin ONLY receives pop v4 and v5 connections")
+		fmt.Println("Liquibase plugin ONLY receives pop v4 and v5 connections")
 	}
 
 	return nil
