@@ -78,8 +78,6 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 			return err
 		}
 
-		fmt.Println(path)
-
 		err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
 		if err != nil {
 			return err
