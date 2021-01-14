@@ -8,9 +8,9 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"regexp"
-	"strings"
 	"time"
+
+	"github.com/gobuffalo/flect"
 )
 
 type Generator struct{}
@@ -25,17 +25,7 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	fecha := fmt.Sprintf("%d%02d%02d%02d%02d%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
 
 	name := args[3]
-	var underscoreName string
-	re := regexp.MustCompile(`[a-zA-Z][^A-Z]*`)
-	submatchall := re.FindAllString(name, -1)
-
-	for index, element := range submatchall {
-		if index == 0 {
-			underscoreName = strings.ToLower(element)
-			continue
-		}
-		underscoreName = underscoreName + "_" + strings.ToLower(element)
-	}
+	underscoreName := flect.Underscore(name)
 	fullName := fecha + "-" + underscoreName + ".xml"
 
 	fmt.Println(fullName)
