@@ -3,6 +3,7 @@ package liquibase
 import (
 	"context"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -16,10 +17,16 @@ func TestLiquibaseGenerator(t *testing.T) {
 
 		args := []string{"ox", "generate", "liquibase", "addDevices"}
 
-		g := Generator{}
+		g := Generator{
+			testPrefix: "testfile001",
+		}
 
 		err = g.Generate(context.Background(), root, args)
+		if err != nil {
+			t.Fatalf("Error should be nil, got %v", err)
+		}
 
+		_, err = os.Stat(filepath.Join(root, "migrations", "testfile001-add_devices.xml"))
 		if err != nil {
 			t.Fatalf("Error should be nil, got %v", err)
 		}
