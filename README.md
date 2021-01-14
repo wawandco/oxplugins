@@ -28,20 +28,4 @@ func main() {
 }
 ```
 
-### Plugins
-
-The following is the list of plugins we have built:
-
-- Ox
-- Pop 
-- Refresh
-- Go
-- Webpack
-- Yarn
-- Build
-- Dev
-- Fix
-- Generate
-- Test
-- Packr [optional]
 

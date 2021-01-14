@@ -3,7 +3,6 @@ package oxplugins
 import (
 	"github.com/wawandco/oxpecker/plugins"
 	"github.com/wawandco/oxplugins/lifecycle/build"
-	"github.com/wawandco/oxplugins/lifecycle/cli"
 	"github.com/wawandco/oxplugins/lifecycle/dev"
 	"github.com/wawandco/oxplugins/lifecycle/fix"
 	"github.com/wawandco/oxplugins/lifecycle/generate"
@@ -14,7 +13,6 @@ import (
 	"github.com/wawandco/oxplugins/tools/flect"
 	"github.com/wawandco/oxplugins/tools/grift"
 	"github.com/wawandco/oxplugins/tools/ox"
-	"github.com/wawandco/oxplugins/tools/pop"
 	"github.com/wawandco/oxplugins/tools/refresh"
 	"github.com/wawandco/oxplugins/tools/standard"
 	"github.com/wawandco/oxplugins/tools/webpack"
@@ -33,15 +31,14 @@ var Base = []plugins.Plugin{
 	// Developer Lifecycle plugins
 	&build.Command{},
 	&dev.Command{},
+
 	&test.Command{},
 	&fix.Command{},
 	&generate.Command{},
-	&pop.Command{},
 	&new.Command{},
 	&grift.Command{},
 
 	// Builders
-	&cli.Builder{},
 	&standard.Builder{},
 
 	// Fixers
@@ -58,5 +55,4 @@ var Base = []plugins.Plugin{
 	// Testers
 	&standard.Tester{},
 	&envy.Tester{},
-	&pop.Tester{},
 }

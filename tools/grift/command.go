@@ -3,6 +3,8 @@ package grift
 import (
 	"context"
 	"fmt"
+	"os"
+	"text/tabwriter"
 
 	"github.com/markbates/grift/grift"
 )
@@ -41,10 +43,17 @@ func (c *Command) Run(ctx context.Context, root string, args []string) error {
 
 func (c Command) list() {
 	list := grift.List()
-	fmt.Printf("Available grift tasks:\n\n")
-	for _, v := range list {
-		fmt.Println(v)
-	}
+	fmt.Printf("There are %v grift tasks available on this app:\n", len(list))
 
-	fmt.Printf("\nrun: ox task [task-name]\n")
+	w := new(tabwriter.Writer)
+	w.Init(os.Stdout, 4, 8, 0, '\t', 0)
+
+	fmt.Fprintf(w, "\n%s\t%s\t", "task-name", "Full Command")
+	fmt.Fprintf(w, "\n%s\t%s\t", "---------", "------------")
+	for _, v := range list {
+		fmt.Fprintf(w, "\n%v\tox task %s\t", v, v)
+	}
+	w.Flush()
+
+	fmt.Printf("\n\nrun one of those with: \nox task [task-name]\n")
 }
