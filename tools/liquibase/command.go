@@ -3,21 +3,21 @@ package liquibase
 import (
 	"context"
 	"errors"
-	"fmt"
-	"os"
-	"os/exec"
-	"regexp"
 
-	pop4 "github.com/gobuffalo/pop"
-	pop5 "github.com/gobuffalo/pop/v5"
+	"github.com/spf13/pflag"
 	"github.com/wawandco/oxpecker/plugins"
 )
 
 var _ plugins.Command = (*Command)(nil)
 var _ plugins.HelpTexter = (*Command)(nil)
 
+var ErrInvalidInstruction = errors.New("Invalid instruction please specify up or down")
+
 type Command struct {
-	connections map[string]URLProvider
+	connectionName string
+	steps          int
+	connections    map[string]URLProvider
+	flags          *pflag.FlagSet
 }
 
 func (lb Command) Name() string {
@@ -29,88 +29,38 @@ func (lb Command) ParentName() string {
 }
 
 func (lb Command) HelpText() string {
-	return "runs Liquibase command to update database with current GO_ENV"
+	return "runs Liquibase command to update database specified with --conn flag"
 }
 
 func (lb *Command) Run(ctx context.Context, root string, args []string) error {
-	currentEnv := os.Getenv("GO_ENV")
-	if currentEnv == "" {
-		currentEnv = "development"
+	if len(args) < 3 {
+		return lb.runUp()
 	}
 
-	return lb.update(currentEnv)
+	direction := args[2]
+	if direction == "up" {
+		return lb.runUp()
+	}
+
+	if direction == "down" {
+		return lb.runDown()
+	}
+
+	return ErrInvalidInstruction
 }
 
 func (lb *Command) RunBeforeTest(ctx context.Context, root string, args []string) error {
-	return lb.update("test")
+	lb.connectionName = "test"
+	return lb.runUp()
 }
 
-func (lb Command) update(env string) error {
-	runArgs, err := lb.buildRunArgsFor(env)
-	if err != nil {
-		return err
-	}
-
-	runArgs = append(runArgs, []string{
-		"--changeLogFile=./migrations/changelog.xml",
-		"update",
-	}...)
-
-	c := exec.Command("liquibase", runArgs...)
-	c.Stdin = os.Stdin
-	c.Stderr = os.Stderr
-	c.Stdout = os.Stdout
-
-	return c.Run()
+func (lb *Command) ParseFlags(args []string) {
+	lb.flags = pflag.NewFlagSet(lb.Name(), pflag.ContinueOnError)
+	lb.flags.StringVarP(&lb.connectionName, "conn", "", "development", "the name of the connection to use")
+	lb.flags.IntVarP(&lb.steps, "steps", "s", 0, "number of migrations to run")
+	lb.flags.Parse(args) //nolint:errcheck,we don't care hence the flag
 }
 
-func (lb Command) buildRunArgsFor(environment string) ([]string, error) {
-	conn := lb.connections[environment]
-	if conn == nil {
-		return []string{}, errors.New("connection not found")
-	}
-
-	r := regexp.MustCompile(`postgres:\/\/(?P<username>.*):(?P<password>.*)@(?P<host>.*):(?P<port>.*)\/(?P<database>.*)\?(?P<extras>.*)`)
-	match := r.FindStringSubmatch(conn.URL())
-	if match == nil {
-		return []string{}, fmt.Errorf("could not convert `%v` url into Liquibase", environment)
-	}
-
-	URL := fmt.Sprintf("jdbc:postgresql://%v:%v/%v?%v", match[3], match[4], match[5], match[6])
-	runArgs := []string{
-		"--driver=org.postgresql.Driver",
-		"--url=" + URL,
-		"--logLevel=info",
-		"--username=" + match[1],
-		"--password=" + match[2],
-	}
-	return runArgs, nil
-}
-
-func NewPlugin(conns interface{}) *Command {
-	switch v := conns.(type) {
-	case map[string]*pop4.Connection:
-		result := map[string]URLProvider{}
-		for k, conn := range v {
-			result[k] = conn
-		}
-
-		return &Command{
-			connections: result,
-		}
-	case map[string]*pop5.Connection:
-		result := map[string]URLProvider{}
-		for k, conn := range v {
-			result[k] = conn
-		}
-
-		return &Command{
-			connections: result,
-		}
-
-	default:
-		fmt.Println("Liquibase plugin ONLY receives pop v4 and v5 connections")
-	}
-
-	return nil
+func (lb *Command) Flags() *pflag.FlagSet {
+	return lb.flags
 }

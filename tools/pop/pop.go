@@ -7,8 +7,5 @@ import (
 )
 
 func Plugins(migrations packd.Box) []plugins.Plugin {
-	pl := []plugins.Plugin{&Tester{}}
-	pl = append(pl, migrate.Plugins(migrations)...)
-
-	return pl
+	return migrate.Plugins(migrations)
 }

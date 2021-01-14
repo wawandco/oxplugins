@@ -49,7 +49,9 @@ func (d *ResetCommand) Run(ctx context.Context, root string, args []string) erro
 	}
 
 	err := resetter.DropDB()
-	fmt.Printf("[warning] could not drop database: %v\n", err)
+	if err != nil {
+		fmt.Printf("[warning] could not drop database: %v\n", err)
+	}
 
 	return resetter.CreateDB()
 }
@@ -76,7 +78,9 @@ func (d *ResetCommand) RunBeforeTest(ctx context.Context, root string, args []st
 	}
 
 	err := resetter.DropDB()
-	fmt.Printf("[warning] could not drop database: %v\n", err)
+	if err != nil {
+		fmt.Printf("[warning] could not drop database: %v\n", err)
+	}
 
 	return resetter.CreateDB()
 }
