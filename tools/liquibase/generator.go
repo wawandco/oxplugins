@@ -3,6 +3,7 @@ package liquibase
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -15,22 +16,38 @@ import (
 
 type Generator struct{}
 
+var ErrName = errors.New("not valid path or name")
+
 func (g Generator) Name() string {
 	return "liquibase"
 }
 
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
-
+	var rootFile string
 	t := time.Now()
 	fecha := fmt.Sprintf("%d%02d%02d%02d%02d%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
 
-	name := args[3]
+	name := filepath.Base(args[3])
+
+	if name == "." || name == "/" {
+		return ErrName
+	}
+
+	dir := filepath.Dir(args[3])
+
+	if name == "." && dir == "." {
+		return ErrName
+	}
+
 	underscoreName := flect.Underscore(name)
 	fullName := fecha + "-" + underscoreName + ".xml"
 
-	fmt.Println(fullName)
+	if dir == "." {
+		rootFile = filepath.Join(root, "migrations", fullName)
+	} else {
+		rootFile = filepath.Join(root, "migrations", dir, fullName)
+	}
 
-	rootFile := filepath.Join(root, "migrations", fullName)
 	_, err := os.Stat(rootFile)
 	if err == nil {
 
