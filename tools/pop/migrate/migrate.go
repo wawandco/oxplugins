@@ -38,7 +38,7 @@ func (m *Command) Name() string {
 }
 
 func (m *Command) ParentName() string {
-	return "pop"
+	return "db"
 }
 
 func (m *Command) Run(ctx context.Context, root string, args []string) error {
