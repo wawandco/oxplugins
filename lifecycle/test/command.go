@@ -38,6 +38,7 @@ func (c *Command) Run(ctx context.Context, root string, args []string) error {
 		err = bt.RunBeforeTest(ctx, root, args[1:])
 		if err != nil {
 			fmt.Printf("[warning] Error running %v before tester: %v\n", bt.Name(), err)
+			break
 		}
 	}
 
