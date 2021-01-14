@@ -43,23 +43,6 @@ func (d *CreateCommand) Run(ctx context.Context, root string, args []string) err
 	return nil
 }
 
-func (d *CreateCommand) RunBeforeTest(ctx context.Context, root string, args []string) error {
-	conn := d.connections["test"]
-	if conn == nil {
-		return ErrConnectionNotFound
-	}
-
-	if c, ok := conn.(*pop4.Connection); ok {
-		return c.Dialect.CreateDB()
-	}
-
-	if c, ok := conn.(*pop5.Connection); ok {
-		return c.Dialect.CreateDB()
-	}
-
-	return nil
-}
-
 func (d *CreateCommand) ParseFlags(args []string) {
 	d.flags = pflag.NewFlagSet(d.Name(), pflag.ContinueOnError)
 	d.flags.StringVarP(&d.connectionName, "conn", "", "development", "the name of the connection to use")
