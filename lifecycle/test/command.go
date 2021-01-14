@@ -37,7 +37,7 @@ func (c *Command) Run(ctx context.Context, root string, args []string) error {
 	for _, bt := range c.beforeTesters {
 		err = bt.RunBeforeTest(ctx, root, args[1:])
 		if err != nil {
-			fmt.Printf("Error running %v before tester: %v\n", bt.Name(), err)
+			fmt.Printf("[warning] Error running %v before tester: %v\n", bt.Name(), err)
 			break
 		}
 	}
