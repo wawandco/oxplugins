@@ -193,6 +193,8 @@ github.com/gobuffalo/fizz v1.8.0/go.mod h1:2LqJOOGUp1JpN9m54ac5jMQ1MpbNvSVbFi9BY
 github.com/gobuffalo/fizz v1.9.0/go.mod h1:2LqJOOGUp1JpN9m54ac5jMQ1MpbNvSVbFi9BY+AEXOo=
 github.com/gobuffalo/fizz v1.9.2/go.mod h1:XJb7Do1keOPkaJnJ48OCjV+7ABQ7mbOqui2WfDobXTQ=
 github.com/gobuffalo/fizz v1.9.5/go.mod h1:v9cFl56oXm+hNNayTsIQHnq209bTDUbIM8GYWCJw3TE=
+github.com/gobuffalo/fizz v1.9.8/go.mod h1:w1FEn1yKNVCc49KnADGyYGRPH7jFON3ak4Bj1yUudHo=
+github.com/gobuffalo/fizz v1.10.0 h1:I8vad0PnmR+CLjSnZ5L5jlhBm4S88UIGOoZZL3/3e24=
 github.com/gobuffalo/fizz v1.10.0/go.mod h1:J2XGPO0AfJ1zKw7+2BA+6FEGAkyEsdCOLvN93WCT2WI=
 github.com/gobuffalo/fizz v1.13.0 h1:XzcBh8DLZH2BgEH77p6q+EKbd8FZyyUXgokUmKXk5ow=
 github.com/gobuffalo/fizz v1.13.0/go.mod h1:cXLjhE5p3iuIes6AGZ/9+dfyOkehlB2Vldj0Iw2Uu38=
@@ -480,6 +482,8 @@ github.com/gobuffalo/pop v4.12.1+incompatible/go.mod h1:DwBz3SD5SsHpTZiTubcsFWcV
 github.com/gobuffalo/pop v4.12.2+incompatible/go.mod h1:DwBz3SD5SsHpTZiTubcsFWcVDpJWGsxjVjMPnkiThWg=
 github.com/gobuffalo/pop v4.13.1+incompatible h1:AhbqPxNOBN/DBb2DBaiBqzOXIBQXxEYzngHHJ+ytP4g=
 github.com/gobuffalo/pop v4.13.1+incompatible/go.mod h1:DwBz3SD5SsHpTZiTubcsFWcVDpJWGsxjVjMPnkiThWg=
+github.com/gobuffalo/pop/v5 v5.1.3 h1:XwXm2sJScNqc6dJOaMTAILECw6nqsf3cooNdleEcoWw=
+github.com/gobuffalo/pop/v5 v5.1.3/go.mod h1:fzUpBhQE48+kPczDbuJIuOCSS7OMqChoaGR6wj2j7Nc=
 github.com/gobuffalo/pop/v5 v5.2.0/go.mod h1:Hj586Cr7FoTFNmvzyNdUcajv3r0A+W+bkil4RIX/zKo=
 github.com/gobuffalo/pop/v5 v5.3.1 h1:dJbBPy6e0G0VRjn28md3fk16wpYIBv5iYVQWd0eqmkQ=
 github.com/gobuffalo/pop/v5 v5.3.1/go.mod h1:vcEDhh6cJ3WVENqJDFt/6z7zNb7lLnlN8vj3n5G9rYA=
@@ -596,6 +600,7 @@ github.com/jackc/pgconn v0.0.0-20190420214824-7e0022ef6ba3/go.mod h1:jkELnwuX+w9
 github.com/jackc/pgconn v0.0.0-20190824142844-760dd75542eb/go.mod h1:lLjNuW/+OfW9/pnVKPazfWOgNfH2aPem8YQ7ilXGvJE=
 github.com/jackc/pgconn v0.0.0-20190831204454-2fabfa3c18b7/go.mod h1:ZJKsE/KZfsUgOEh9hBm+xYTstcNHg7UPMVJqRfQxq4s=
 github.com/jackc/pgconn v1.0.1/go.mod h1:GgY/Lbj1VonNaVdNUHs9AwWom3yP2eymFQ1C8z9r/Lk=
+github.com/jackc/pgconn v1.3.2/go.mod h1:LvCquS3HbBKwgl7KbX9KyqEIumJAbm1UMcTvGaIf3bM=
 github.com/jackc/pgconn v1.5.0/go.mod h1:QeD3lBfpTFe8WUnPZWN5KY/mB8FGMIYRdd8P8Jr0fAI=
 github.com/jackc/pgconn v1.6.0 h1:8FiBxMxS/Z0eQ9BeE1HhL6pzPL1R5x+ZuQ+T86WgZ4I=
 github.com/jackc/pgconn v1.6.0/go.mod h1:yeseQo4xhQbgyJs2c87RAXOH2i624N0Fh1KSPJya7qo=
