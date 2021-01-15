@@ -8,7 +8,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
-	"github.com/wawandco/oxplugins/tools/cli/help"
+	"github.com/wawandco/oxplugins/tools/docker"
 	"github.com/wawandco/oxplugins/tools/envy"
 	"github.com/wawandco/oxplugins/tools/flect"
 	"github.com/wawandco/oxplugins/tools/grift"
@@ -18,10 +18,6 @@ import (
 	"github.com/wawandco/oxplugins/tools/webpack"
 	"github.com/wawandco/oxplugins/tools/yarn"
 )
-
-var Default = []plugins.Plugin{
-	help.Command{},
-}
 
 // Base plugins for Wawandco applications lifecycle. While oxplugins
 // has other plugins this list is the base that is used across most of
@@ -54,6 +50,7 @@ var Base = []plugins.Plugin{
 	// Initializer
 	&refresh.Initializer{},
 	&flect.Initializer{},
+	&docker.Initializer{},
 
 	// Testers
 	&standard.Tester{},
