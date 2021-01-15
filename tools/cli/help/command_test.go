@@ -6,15 +6,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/wawandco/oxpecker/cli/plugins/version"
 	"github.com/wawandco/oxplugins/plugins"
 )
 
 func TestFindCommand(t *testing.T) {
 	hp := Command{
-		commands: []plugins.Command{
-			&version.Version{},
-		},
+		commands: []plugins.Command{},
 	}
 
 	migrate := &subPl{}
@@ -33,11 +30,11 @@ func TestFindCommand(t *testing.T) {
 	})
 
 	t.Run("top level command", func(*testing.T) {
-		result, names := hp.findCommand([]string{"help", "version"})
+		result, names := hp.findCommand([]string{"help", "pop"})
 		expected := []string{
-			"version",
+			"pop",
 		}
-		if result.Name() != "version" || strings.Join(names, " ") != strings.Join(expected, " ") {
+		if result.Name() != "pop" || strings.Join(names, " ") != strings.Join(expected, " ") {
 			t.Fatal("didn't find our guy")
 		}
 	})
