@@ -2,7 +2,7 @@ package pop
 
 import (
 	"github.com/gobuffalo/packd"
-	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/plugins"
 	"github.com/wawandco/oxplugins/tools/pop/migrate"
 )
 

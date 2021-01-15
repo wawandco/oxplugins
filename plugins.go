@@ -1,13 +1,13 @@
 package oxplugins
 
 import (
-	"github.com/wawandco/oxpecker/plugins"
 	"github.com/wawandco/oxplugins/lifecycle/build"
 	"github.com/wawandco/oxplugins/lifecycle/dev"
 	"github.com/wawandco/oxplugins/lifecycle/fix"
 	"github.com/wawandco/oxplugins/lifecycle/generate"
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
+	"github.com/wawandco/oxplugins/plugins"
 	"github.com/wawandco/oxplugins/tools/envy"
 	"github.com/wawandco/oxplugins/tools/flect"
 	"github.com/wawandco/oxplugins/tools/grift"

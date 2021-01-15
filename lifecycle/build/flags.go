@@ -2,7 +2,7 @@ package build
 
 import (
 	"github.com/spf13/pflag"
-	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
 func (b *Command) ParseFlags(args []string) {
