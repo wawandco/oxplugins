@@ -115,6 +115,9 @@ func TestLiquibaseGenerator(t *testing.T) {
 			testPrefix: "testfile001",
 		}
 		ret, err := g.genPath(args, root)
+		if err != nil {
+			t.Fatalf("error should bw nil got, %v", err)
+		}
 		path := filepath.Join(root, "migrations", "testfile001-add_devices.xml")
 
 		expected := []string{path, "add_devices", "testfile001"}
