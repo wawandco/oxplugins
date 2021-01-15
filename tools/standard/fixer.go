@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/wawandco/oxpecker/plugins"
 	"github.com/wawandco/oxplugins/lifecycle/fix"
+	"github.com/wawandco/oxplugins/plugins"
 	"golang.org/x/mod/modfile"
 )
 

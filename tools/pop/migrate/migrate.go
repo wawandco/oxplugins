@@ -2,7 +2,7 @@ package migrate
 
 import (
 	"github.com/gobuffalo/packd"
-	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
 func Plugins(migrations packd.Box) []plugins.Plugin {

@@ -3,7 +3,7 @@ package test
 import (
 	"context"
 
-	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
 // BeforeTester interface is suited for those tasks that need to happen

@@ -8,7 +8,7 @@ import (
 
 	pop4 "github.com/gobuffalo/pop"
 	pop5 "github.com/gobuffalo/pop/v5"
-	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
 var _ plugins.Command = (*Command)(nil)

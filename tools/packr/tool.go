@@ -1,6 +1,6 @@
 package packr
 
-import "github.com/wawandco/oxpecker/plugins"
+import "github.com/wawandco/oxplugins/plugins"
 
 var (
 	_ plugins.Plugin = (*Plugin)(nil)
