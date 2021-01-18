@@ -19,6 +19,7 @@ require (
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/markbates/grift v1.5.0
 	github.com/markbates/refresh v1.11.1
+	github.com/pkg/errors v0.9.1
 	github.com/rogpeppe/go-internal v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
