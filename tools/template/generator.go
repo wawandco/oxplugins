@@ -2,7 +2,6 @@ package template
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -56,8 +55,9 @@ func (g Generator) generateTemplate(root, filename string) error {
 // generateFilePath translates the required path to create the file properly
 func (g Generator) generateFilePath(dirPath, filename string) string {
 	base := strings.Split(filename, ".")[0]
+	file := base + ".plush.html"
 
-	return fmt.Sprintf("%s/%s.plush.html", dirPath, base)
+	return filepath.Join(dirPath, file)
 }
 
 func (g Generator) exists(path string) bool {
