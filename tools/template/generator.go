@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 )
@@ -37,8 +38,7 @@ func (g Generator) generateTemplate(root, filename string) error {
 		return errors.Errorf("folder '%s' do not exists on your buffalo app, please ensure the folder exists in order to proceed", dirpath)
 	}
 
-	tmpl := fmt.Sprintf("%s/%s.plush.html", dirpath, filename)
-
+	tmpl := g.generateFilePath(dirpath, filename)
 	if g.exists(tmpl) {
 		return errors.Errorf("template already exists")
 	}
@@ -51,6 +51,13 @@ func (g Generator) generateTemplate(root, filename string) error {
 	defer file.Close()
 
 	return nil
+}
+
+// generateFilePath translates the required path to create the file properly
+func (g Generator) generateFilePath(dirPath, filename string) string {
+	base := strings.Split(filename, ".")[0]
+
+	return fmt.Sprintf("%s/%s.plush.html", dirPath, base)
 }
 
 func (g Generator) exists(path string) bool {
