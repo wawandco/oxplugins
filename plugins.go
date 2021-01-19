@@ -15,6 +15,7 @@ import (
 	"github.com/wawandco/oxplugins/tools/ox"
 	"github.com/wawandco/oxplugins/tools/refresh"
 	"github.com/wawandco/oxplugins/tools/standard"
+	"github.com/wawandco/oxplugins/tools/template"
 	"github.com/wawandco/oxplugins/tools/webpack"
 	"github.com/wawandco/oxplugins/tools/yarn"
 )
@@ -46,6 +47,7 @@ var Base = []plugins.Plugin{
 
 	// Generators
 	&ox.Generator{},
+	&template.Generator{},
 
 	// Initializer
 	&refresh.Initializer{},
