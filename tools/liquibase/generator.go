@@ -14,14 +14,16 @@ import (
 	"github.com/gobuffalo/flect"
 )
 
+var ErrName = errors.New("not valid path or name")
+
 type Generator struct {
 	testPrefix string
 }
 
-var ErrName = errors.New("not valid path or name")
-
+// Name is the name used to identify the generator and also
+// the plugin
 func (g Generator) Name() string {
-	return "liquibase"
+	return "migration"
 }
 
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
