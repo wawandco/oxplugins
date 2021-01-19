@@ -72,6 +72,7 @@ github.com/gobuffalo/helpers v0.4.0/go.mod h1:2q/ZnVxCehM4/y1bNz3+wXsvWvWUY+iTUr
 github.com/gobuffalo/helpers v0.6.0/go.mod h1:pncVrer7x/KRvnL5aJABLAuT/RhKRR9klL6dkUOhyv8=
 github.com/gobuffalo/helpers v0.6.1 h1:LLcL4BsiyDQYtMRUUpyFdBFvFXQ6hNYOpwrcYeilVWM=
 github.com/gobuffalo/helpers v0.6.1/go.mod h1:wInbDi0vTJKZBviURTLRMFLE4+nF2uRuuL2fnlYo7w4=
+github.com/gobuffalo/here v0.4.0 h1:TD+FD+jQkp5iNPYEAxT6E+4O8u/pOQJyDjmZNC0+/80=
 github.com/gobuffalo/here v0.4.0/go.mod h1:bTNk/uKZgycuB358iR0D32dI9kHBClBGpXjW2HVHkNo=
 github.com/gobuffalo/logger v0.0.0-20190315122211-86e12af44bc2/go.mod h1:QdxcLw541hSGtBnhUc4gaNIXRjiDppFGaDqzbrBd3v8=
 github.com/gobuffalo/logger v1.0.0/go.mod h1:2zbswyIUa45I+c+FLXuWl9zSWEiVuthsk8ze5s8JvPs=

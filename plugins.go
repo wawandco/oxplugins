@@ -8,6 +8,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
+	"github.com/wawandco/oxplugins/tools/cli/help"
 	"github.com/wawandco/oxplugins/tools/docker"
 	"github.com/wawandco/oxplugins/tools/envy"
 	"github.com/wawandco/oxplugins/tools/flect"
@@ -24,6 +25,8 @@ import (
 // has other plugins this list is the base that is used across most of
 // the apps we do. Feel free to add the rest in your cmd/ox/main.go file.
 var Base = []plugins.Plugin{
+	&help.Command{},
+
 	// Tools plugins.
 	&webpack.Plugin{},
 	&refresh.Plugin{},
