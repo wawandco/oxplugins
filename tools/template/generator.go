@@ -2,6 +2,7 @@ package template
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -26,6 +27,8 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	if err := g.generateTemplate(root, args[2]); err != nil {
 		return err
 	}
+
+	fmt.Printf("[info] Template generated in app/templates/%s.plush.html \n", args[2])
 
 	return nil
 }
