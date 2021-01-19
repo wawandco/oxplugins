@@ -49,8 +49,38 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 }
 
 func (g Generator) generateModelFiles() error {
+	if err := g.createModelFile(); err != nil {
+		return errors.Wrap(err, "creating model file")
+	}
+
 	if err := g.createModelTestFile(); err != nil {
 		return errors.Wrap(err, "creating model test file")
+	}
+
+	return nil
+}
+
+func (g Generator) createModelFile() error {
+	filename := flect.Singularize(g.name) + ".go"
+	path := filepath.Join(g.dir, filename)
+	data := opts{
+		Name:    g.name,
+		Imports: buildImports([]string{}),
+	}
+
+	tmpl, err := template.New(filename).Funcs(templateFuncs).Parse(modelTemplate)
+	if err != nil {
+		return errors.Wrap(err, "parsing new template error")
+	}
+
+	var tpl bytes.Buffer
+	if err := tmpl.Execute(&tpl, data); err != nil {
+		return errors.Wrap(err, "executing new template error")
+	}
+
+	err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
+	if err != nil {
+		return errors.Wrap(err, "writing new template error")
 	}
 
 	return nil
@@ -60,10 +90,10 @@ func (g Generator) createModelTestFile() error {
 	filename := flect.Singularize(g.name) + "_test.go"
 	path := filepath.Join(g.dir, filename)
 	data := opts{
-		Name: flect.Capitalize(flect.Singularize(g.name)),
+		Name: g.name,
 	}
 
-	tmpl, err := template.New(filename).Parse(modelTestTemplate)
+	tmpl, err := template.New(filename).Funcs(templateFuncs).Parse(modelTestTemplate)
 	if err != nil {
 		return errors.Wrap(err, "parsing new template error")
 	}

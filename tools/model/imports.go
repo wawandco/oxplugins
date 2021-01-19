@@ -2,11 +2,11 @@ package model
 
 import "sort"
 
-func buildImports(imps map[string]bool) []string {
-	// imps := map[string]bool{
-	// 	"github.com/gobuffalo/validate/v3": true,
-	// 	"github.com/gobuffalo/pop/v5":      true,
-	// }
+func buildImports(attrs []string) []string {
+	imps := map[string]bool{
+		"encoding/json": true,
+	}
+
 	// if opts.Encoding == "jsonapi" {
 	// 	imps["github.com/google/jsonapi"] = true
 	// 	imps["strings"] = true
