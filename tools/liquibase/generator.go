@@ -32,6 +32,7 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	if err != nil {
 		return err
 	}
+
 	path := ret[0]
 	name := ret[1]
 	timestamp := ret[2]
@@ -69,7 +70,10 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		if err != nil {
 			return err
 		}
+
+		fmt.Printf("[info] migration generated in %v\n", path)
 	}
+
 	return nil
 }
 
