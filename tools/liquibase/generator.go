@@ -25,30 +25,15 @@ func (g Generator) Name() string {
 }
 
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
-	name := filepath.Base(args[3])
-	if name == "." || name == "/" {
-		return ErrName
+
+	ret, err := g.genPath(args, root)
+	if err != nil {
+		return err
 	}
-
-	dir := filepath.Dir(args[3])
-	if name == "." && dir == "." {
-		return ErrName
-	}
-
-	underscoreName := flect.Underscore(name)
-	timestamp := time.Now().UTC().Format("20060102150405")
-	if g.testPrefix != "" {
-		timestamp = g.testPrefix
-	}
-
-	fullName := timestamp + "-" + underscoreName + ".xml"
-
-	path := filepath.Join(root, "migrations", fullName)
-	if dir != "." {
-		path = filepath.Join(root, "migrations", dir, fullName)
-	}
-
-	_, err := os.Stat(path)
+	path := ret[0]
+	name := ret[1]
+	timestamp := ret[2]
+	_, err = os.Stat(path)
 	if err == nil {
 		fmt.Println("file/directory already exist ")
 
@@ -84,4 +69,47 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		}
 	}
 	return nil
+}
+
+//Genpath retunrs the path, the name of the file and the timestamp
+func (g Generator) genPath(args []string, root string) ([]string, error) {
+	var ret []string
+	name := filepath.Base(args[3])
+	if name == "." || name == "/" {
+		return ret, ErrName
+	}
+
+	dir := filepath.Dir(args[3])
+	if name == "." && dir == "." {
+		return ret, ErrName
+	}
+
+	underscoreName := flect.Underscore(name)
+	timestamp := time.Now().UTC().Format("20060102150405")
+	if g.testPrefix != "" {
+		timestamp = g.testPrefix
+	}
+
+	fullName := timestamp + "-" + underscoreName + ".xml"
+
+	path := filepath.Join(root, "migrations", fullName)
+	if dir != "." {
+		path = filepath.Join(root, "migrations", dir, fullName)
+	}
+	ret = append(ret, path, underscoreName, timestamp)
+
+	return ret, nil
+}
+
+func (g Generator) equal(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+
+		}
+	}
+	return true
 }

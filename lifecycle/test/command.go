@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
 var _ plugins.Plugin = (*Command)(nil)

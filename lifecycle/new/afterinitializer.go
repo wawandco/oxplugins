@@ -3,7 +3,7 @@ package new
 import (
 	"context"
 
-	"github.com/wawandco/oxpecker/plugins"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
 // AfterInitializer is intended to initialize applications,
