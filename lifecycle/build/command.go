@@ -25,7 +25,7 @@ func (b Command) ParentName() string {
 	return ""
 }
 
-//HelpText resturns the help Text of build function
+//HelpText returns the help Text of build function
 func (b Command) HelpText() string {
 	return "builds a buffalo app from within the root folder of the project"
 }

@@ -23,7 +23,7 @@ func (d Command) ParentName() string {
 	return ""
 }
 
-//HelpText resturns the help Text of build function
+//HelpText returns the help Text of build function
 func (d Command) HelpText() string {
 	return "calls NPM or yarn to start webpack watching the assetst"
 }

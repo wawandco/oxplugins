@@ -20,6 +20,28 @@ func Test_GenerateTemplate(t *testing.T) {
 		}
 	})
 
+	t.Run("generate template with subfolder", func(t *testing.T) {
+		dir := t.TempDir()
+		if err := os.MkdirAll(filepath.Join(dir, "app", "templates"), os.ModePerm); err != nil {
+			t.Errorf("creating templates folder should not be error, but got %v", err)
+		}
+
+		if err := g.generateTemplate(dir, "partials/sidebar"); err != nil {
+			t.Errorf("should not be error, but got %v", err)
+		}
+	})
+
+	t.Run("generate template with subfolder 2", func(t *testing.T) {
+		dir := t.TempDir()
+		if err := os.MkdirAll(filepath.Join(dir, "app", "templates"), os.ModePerm); err != nil {
+			t.Errorf("creating templates folder should not be error, but got %v", err)
+		}
+
+		if err := g.generateTemplate(dir, "templates/index"); err != nil {
+			t.Errorf("should not be error, but got %v", err)
+		}
+	})
+
 	t.Run("generated template already exists", func(t *testing.T) {
 		dir := t.TempDir()
 		templatesPath := filepath.Join(dir, "app", "templates")

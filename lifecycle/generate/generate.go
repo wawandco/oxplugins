@@ -10,7 +10,7 @@ import (
 	"github.com/wawandco/oxplugins/plugins"
 )
 
-//HelpText resturns the help Text of build function
+//HelpText returns the help Text of build function
 
 var _ plugins.Command = (*Command)(nil)
 var _ plugins.PluginReceiver = (*Command)(nil)
