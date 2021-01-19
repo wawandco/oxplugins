@@ -27,7 +27,6 @@ func (g Generator) Name() string {
 }
 
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
-
 	ret, err := g.genPath(args, root)
 	if err != nil {
 		return err
