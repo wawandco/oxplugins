@@ -62,8 +62,10 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		Name: ret[1],
 		Time: ret[2],
 	}
+
 	var tpl bytes.Buffer
-	if err := tmpl.Execute(&tpl, data); err != nil {
+	err = tmpl.Execute(&tpl, data)
+	if err != nil {
 		return err
 	}
 
