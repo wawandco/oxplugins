@@ -42,9 +42,13 @@ func (g Generator) generateTemplate(root, filename string) error {
 		return errors.Errorf("template already exists")
 	}
 
+	if err := os.MkdirAll(filepath.Dir(tmpl), 0755); err != nil {
+		return errors.Wrap(err, "error creating subfolders")
+	}
+
 	file, err := os.Create(tmpl)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error creating file")
 	}
 
 	defer file.Close()
