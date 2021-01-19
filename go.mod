@@ -7,12 +7,13 @@ require (
 	github.com/gobuffalo/envy v1.9.0
 	github.com/gobuffalo/fizz v1.10.0 // indirect
 	github.com/gobuffalo/flect v0.2.2
-	github.com/gobuffalo/genny v0.4.1 // indirect
+	github.com/gobuffalo/genny v0.6.0 // indirect
 	github.com/gobuffalo/nulls v0.4.0 // indirect
 	github.com/gobuffalo/packd v1.0.0
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gobuffalo/pop v4.13.1+incompatible
 	github.com/gobuffalo/pop/v5 v5.1.3
+	github.com/gobuffalo/validate v2.0.4+incompatible // indirect
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/jackc/pgconn v1.6.0 // indirect
 	github.com/karrick/godirwalk v1.16.1 // indirect
