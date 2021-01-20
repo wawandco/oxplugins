@@ -2,7 +2,7 @@ package model
 
 import "sort"
 
-func buildImports(attrs []string) []string {
+func buildImports(attrs []attr) []string {
 	imps := map[string]bool{
 		"encoding/json": true,
 	}

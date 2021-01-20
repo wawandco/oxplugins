@@ -2,7 +2,7 @@ package model
 
 type opts struct {
 	Name    string
-	Attrs   map[string]string
+	Attrs   []attr
 	Imports []string
 }
 

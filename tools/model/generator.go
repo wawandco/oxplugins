@@ -41,15 +41,15 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return errors.Errorf("model already exists")
 	}
 
-	if err := g.generateModelFiles(); err != nil {
+	if err := g.generateModelFiles(args[3:]); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (g Generator) generateModelFiles() error {
-	if err := g.createModelFile(); err != nil {
+func (g Generator) generateModelFiles(args []string) error {
+	if err := g.createModelFile(args); err != nil {
 		return errors.Wrap(err, "creating model file")
 	}
 
@@ -60,12 +60,14 @@ func (g Generator) generateModelFiles() error {
 	return nil
 }
 
-func (g Generator) createModelFile() error {
+func (g Generator) createModelFile(args []string) error {
 	filename := flect.Singularize(g.name) + ".go"
 	path := filepath.Join(g.dir, filename)
+	attrs := buildAttrs(args)
 	data := opts{
 		Name:    g.name,
-		Imports: buildImports([]string{}),
+		Attrs:   attrs,
+		Imports: buildImports(attrs),
 	}
 
 	tmpl, err := template.New(filename).Funcs(templateFuncs).Parse(modelTemplate)

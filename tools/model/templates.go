@@ -16,6 +16,7 @@ var (
 
 // {{ properize .Name }} model struct
 type {{ properize .Name }} struct {
+		
 }
 
 // String converts the struct into a string value
