@@ -5,25 +5,27 @@ import (
 
 	pop4 "github.com/gobuffalo/pop"
 	pop5 "github.com/gobuffalo/pop/v5"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
-func NewPlugin(conns interface{}) *Command {
-	result := map[string]URLProvider{}
+func Plugins(conns interface{}) []plugins.Plugin {
+	connections := map[string]URLProvider{}
 
 	switch v := conns.(type) {
 	case map[string]*pop4.Connection:
 		for k, conn := range v {
-			result[k] = conn
+			connections[k] = conn
 		}
 	case map[string]*pop5.Connection:
 		for k, conn := range v {
-			result[k] = conn
+			connections[k] = conn
 		}
 	default:
 		fmt.Println("[warning] Liquibase plugin ONLY receives pop v4 and v5 connections")
 	}
 
-	return &Command{
-		connections: result,
+	return []plugins.Plugin{
+		&Command{connections: connections},
+		&Generator{},
 	}
 }

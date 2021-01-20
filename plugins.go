@@ -8,6 +8,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
+	"github.com/wawandco/oxplugins/tools/cli/help"
 	"github.com/wawandco/oxplugins/tools/docker"
 	"github.com/wawandco/oxplugins/tools/envy"
 	"github.com/wawandco/oxplugins/tools/flect"
@@ -16,6 +17,7 @@ import (
 	"github.com/wawandco/oxplugins/tools/ox"
 	"github.com/wawandco/oxplugins/tools/refresh"
 	"github.com/wawandco/oxplugins/tools/standard"
+	"github.com/wawandco/oxplugins/tools/template"
 	"github.com/wawandco/oxplugins/tools/webpack"
 	"github.com/wawandco/oxplugins/tools/yarn"
 )
@@ -24,6 +26,8 @@ import (
 // has other plugins this list is the base that is used across most of
 // the apps we do. Feel free to add the rest in your cmd/ox/main.go file.
 var Base = []plugins.Plugin{
+	&help.Command{},
+
 	// Tools plugins.
 	&webpack.Plugin{},
 	&refresh.Plugin{},
@@ -48,6 +52,7 @@ var Base = []plugins.Plugin{
 	// Generators
 	&ox.Generator{},
 	&model.Generator{},
+	&template.Generator{},
 
 	// Initializer
 	&refresh.Initializer{},
