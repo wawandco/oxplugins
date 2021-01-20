@@ -3,6 +3,7 @@ package build
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/wawandco/oxplugins/plugins"
 )
@@ -32,13 +33,18 @@ func (b Command) HelpText() string {
 
 // Run builds a buffalo app from within the root folder of the project
 // To do so, It:x
+// - Sets GO_ENV to be production
 // - Runs NPM or YARN depending on what if finds
 // - Runs Packr, Pkger or Other Packing tool
 // - Injects database.yml and inflections.
 // - Overrides main.go to add migrate
 // - Runs go build
 func (b *Command) Run(ctx context.Context, root string, args []string) error {
-	var err error
+	err := b.setenv()
+	if err != nil {
+		return err
+	}
+
 	for _, builder := range b.beforeBuilders {
 		fmt.Printf(">>> %v BeforeBuilder Running \n", builder.Name())
 
@@ -95,4 +101,13 @@ func (b *Command) Receive(plugins []plugins.Plugin) {
 			b.buildPlugins = append(b.buildPlugins, plugin)
 		}
 	}
+}
+
+func (b *Command) setenv() error {
+	env := os.Getenv("GO_ENV")
+	if env != "" {
+		return nil
+	}
+
+	return os.Setenv("GO_ENV", "production")
 }
