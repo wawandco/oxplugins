@@ -5,7 +5,7 @@ import (
 )
 
 type attr struct {
-	name   string
+	Name   string
 	goType string
 }
 
@@ -59,7 +59,7 @@ func buildAttrs(args []string) []attr {
 		}
 
 		attrs = append(attrs, attr{
-			name:   strings.ToLower(slice[0]),
+			Name:   strings.ToLower(slice[0]),
 			goType: strings.ToLower(slice[1]),
 		})
 	}
@@ -69,7 +69,7 @@ func buildAttrs(args []string) []attr {
 
 // defaultAttrs appends the default attributes if they are not specified
 func defaultAttrs(args []string) []string {
-	defaults := []string{"id:uuid", "createdat:timestamp", "updatedat:timestamp"}
+	defaults := []string{"id:uuid", "created_at:timestamp", "updated_at:timestamp"}
 
 	if len(args) == 0 {
 		return defaults
@@ -88,11 +88,11 @@ func defaultAttrs(args []string) []string {
 		attrs = append(attrs, defaults[0])
 	}
 
-	if _, ok := m["createdat"]; !ok {
+	if _, ok := m["created_at"]; !ok {
 		attrs = append(attrs, defaults[1])
 	}
 
-	if _, ok := m["updatedat"]; !ok {
+	if _, ok := m["updated_at"]; !ok {
 		attrs = append(attrs, defaults[2])
 	}
 

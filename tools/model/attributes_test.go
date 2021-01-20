@@ -6,7 +6,7 @@ import (
 )
 
 func Test_BuildAttrs(t *testing.T) {
-	defaults := []attr{{name: "id", goType: "uuid"}, {name: "createdat", goType: "timestamp"}, {name: "updatedat", goType: "timestamp"}}
+	defaults := []attr{{Name: "id", goType: "uuid"}, {Name: "created_at", goType: "timestamp"}, {Name: "updated_at", goType: "timestamp"}}
 
 	cases := []struct {
 		args     []string
@@ -21,22 +21,22 @@ func Test_BuildAttrs(t *testing.T) {
 		{
 			testName: "Some Args Without Type",
 			args:     []string{"description:text", "title"},
-			expected: []attr{{name: "id", goType: "uuid"}, {name: "createdat", goType: "timestamp"}, {name: "updatedat", goType: "timestamp"}, {name: "description", goType: "text"}, {name: "title", goType: "string"}},
+			expected: []attr{{Name: "id", goType: "uuid"}, {Name: "created_at", goType: "timestamp"}, {Name: "updated_at", goType: "timestamp"}, {Name: "description", goType: "text"}, {Name: "title", goType: "string"}},
 		},
 		{
 			testName: "Replacing Defaults",
 			args:     []string{"description:text", "id:int"},
-			expected: []attr{{name: "createdat", goType: "timestamp"}, {name: "updatedat", goType: "timestamp"}, {name: "description", goType: "text"}, {name: "id", goType: "int"}},
+			expected: []attr{{Name: "created_at", goType: "timestamp"}, {Name: "updated_at", goType: "timestamp"}, {Name: "description", goType: "text"}, {Name: "id", goType: "int"}},
 		},
 		{
 			testName: "Replacing Defaults 2",
-			args:     []string{"createdat:int", "description:text", "updatedat:int", "id:int"},
-			expected: []attr{{name: "createdat", goType: "int"}, {name: "description", goType: "text"}, {name: "updatedat", goType: "int"}, {name: "id", goType: "int"}},
+			args:     []string{"created_at:int", "description:text", "updated_at:int", "id:int"},
+			expected: []attr{{Name: "created_at", goType: "int"}, {Name: "description", goType: "text"}, {Name: "updated_at", goType: "int"}, {Name: "id", goType: "int"}},
 		},
 		{
 			testName: "Testing Camelize Capitalize",
-			args:     []string{"CreatedAt:int", "Description:text", "UpdatedAt:int", "ID:int"},
-			expected: []attr{{name: "createdat", goType: "int"}, {name: "description", goType: "text"}, {name: "updatedat", goType: "int"}, {name: "id", goType: "int"}},
+			args:     []string{"created_at:int", "Description:text", "updated_at:int", "ID:int"},
+			expected: []attr{{Name: "created_at", goType: "int"}, {Name: "description", goType: "text"}, {Name: "updated_at", goType: "int"}, {Name: "id", goType: "int"}},
 		},
 	}
 
