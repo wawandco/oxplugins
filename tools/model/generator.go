@@ -40,7 +40,7 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	g.filename = flect.Underscore(args[2])
 	g.dir = dirPath
 
-	if g.exists(filepath.Join(g.dir, g.name+".go")) {
+	if g.exists(filepath.Join(g.dir, g.filename+".go")) {
 		return errors.Errorf("model already exists")
 	}
 
