@@ -3,6 +3,7 @@ package model
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"os"
@@ -14,8 +15,9 @@ import (
 
 // Generator allows to identify model as a plugin
 type Generator struct {
-	name string
-	dir  string
+	name     string
+	filename string
+	dir      string
 }
 
 // Name returns the name of the generator plugin
@@ -34,7 +36,8 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return errors.Errorf("folder '%s' do not exists on your buffalo app, please ensure the folder exists in order to proceed", dirPath)
 	}
 
-	g.name = args[2]
+	g.name = flect.Singularize(args[2])
+	g.filename = flect.Underscore(args[2])
 	g.dir = dirPath
 
 	if g.exists(filepath.Join(g.dir, g.name+".go")) {
@@ -44,6 +47,8 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	if err := g.generateModelFiles(args[3:]); err != nil {
 		return err
 	}
+
+	fmt.Printf("[info] Model generated in: \n-- app/models/%s.go\n-- app/models/%s_test.go\n", g.name, g.name)
 
 	return nil
 }
@@ -61,7 +66,7 @@ func (g Generator) generateModelFiles(args []string) error {
 }
 
 func (g Generator) createModelFile(args []string) error {
-	filename := flect.Singularize(g.name) + ".go"
+	filename := g.filename + ".go"
 	path := filepath.Join(g.dir, filename)
 	attrs := buildAttrs(args)
 	data := opts{
@@ -89,7 +94,7 @@ func (g Generator) createModelFile(args []string) error {
 }
 
 func (g Generator) createModelTestFile() error {
-	filename := flect.Singularize(g.name) + "_test.go"
+	filename := g.filename + "_test.go"
 	path := filepath.Join(g.dir, filename)
 	data := opts{
 		Name: g.name,

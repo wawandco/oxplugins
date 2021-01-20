@@ -9,7 +9,7 @@ type attr struct {
 	goType string
 }
 
-// GoType returns the Go type for an Attr based on its commonType
+// GoType returns the Go type for an Attr based on its type
 func (a attr) GoType() string {
 	switch strings.ToLower(a.goType) {
 	case "text":
