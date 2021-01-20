@@ -17,7 +17,7 @@ import (
 // {{ properize .Name }} model struct
 type {{ properize .Name }} struct {
 	{{- range $attr := .Attrs }}
-	{{ pascalize $attr.Name }}	{{$attr.GoType }} ` + `json:"{{ underscore $attr.Name }}" db:"{{ underscore $attr.Name }}"` + `
+	{{ pascalize $attr.Name }}	{{$attr.GoType }} ` + "`" + `json:"{{ underscore $attr.Name }}"` + "`\t`" + `db:"{{ underscore $attr.Name }}"` + "`" + `
 	{{- end }}
 }
 
