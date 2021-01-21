@@ -37,7 +37,7 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	}
 
 	g.name = flect.Singularize(args[2])
-	g.filename = flect.Underscore(args[2])
+	g.filename = flect.Singularize(flect.Underscore(args[2]))
 	g.dir = dirPath
 
 	if g.exists(filepath.Join(g.dir, g.filename+".go")) {
