@@ -14,12 +14,12 @@ func Test_BuildImports(t *testing.T) {
 		{
 			testName: "With Default Attributes",
 			attrs:    []attr{{Name: "id", goType: "uuid"}, {Name: "created_at", goType: "timestamp"}, {Name: "updated_at", goType: "timestamp"}},
-			expected: []string{"encoding/json", "github.com/gofrs/uuid", "time"},
+			expected: []string{"encoding/json", "github.com/gofrs/uuid", "log", "time"},
 		},
 		{
 			testName: "All Possible Attributes",
 			attrs:    []attr{{Name: "id", goType: "uuid"}, {Name: "created_at", goType: "timestamp"}, {Name: "updated_at", goType: "timestamp"}, {Name: "description", goType: "nulls.String"}, {Name: "prices", goType: "slices.Float"}},
-			expected: []string{"encoding/json", "github.com/gobuffalo/nulls", "github.com/gobuffalo/pop/v5/slices", "github.com/gofrs/uuid", "time"},
+			expected: []string{"encoding/json", "github.com/gobuffalo/nulls", "github.com/gobuffalo/pop/v5/slices", "github.com/gofrs/uuid", "log", "time"},
 		},
 	}
 
