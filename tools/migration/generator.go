@@ -11,10 +11,7 @@ import (
 )
 
 // Generator allows to identify model as a plugin
-type Generator struct {
-	migrationType string
-	name          string
-}
+type Generator struct{}
 
 // Name returns the name of the generator plugin
 func (g Generator) Name() string {
