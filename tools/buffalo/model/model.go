@@ -1,5 +1,7 @@
 package model
 
+import "strings"
+
 type opts struct {
 	Name    string
 	Attrs   []attr
@@ -7,5 +9,5 @@ type opts struct {
 }
 
 func (o opts) Char() string {
-	return o.Name[:1]
+	return strings.ToLower(o.Name[:1])
 }
