@@ -27,7 +27,7 @@ type Command struct {
 	flags *pflag.FlagSet
 }
 
-//HelpText resturns the help Text of build function
+//HelpText returns the help Text of build function
 func (m Command) HelpText() string {
 	return "Uses soda to run pop migrations"
 }

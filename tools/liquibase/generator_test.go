@@ -18,7 +18,7 @@ func TestLiquibaseGenerator(t *testing.T) {
 			t.Error("could not change to temp directory")
 		}
 
-		args := []string{"ox", "generate", "liquibase", "addDevices"}
+		args := []string{"generate", "migration", "addDevices"}
 
 		g := Generator{
 			testPrefix: "testfile001",
@@ -52,7 +52,7 @@ func TestLiquibaseGenerator(t *testing.T) {
 			t.Error("could not change to temp directory")
 		}
 
-		args := []string{"ox", "generate", "liquibase", "location/addDevices"}
+		args := []string{"generate", "migration", "location/addDevices"}
 
 		g := Generator{
 			testPrefix: "testfile001",
@@ -89,7 +89,7 @@ func TestLiquibaseGenerator(t *testing.T) {
 			t.Error("could not change to temp directory")
 		}
 
-		args := []string{"ox", "generate", "liquibase", "."}
+		args := []string{"generate", "migration", "."}
 
 		g := Generator{}
 
@@ -109,7 +109,7 @@ func TestLiquibaseGenerator(t *testing.T) {
 			t.Error("could not change to temp directory")
 		}
 
-		args := []string{"ox", "generate", "liquibase", "addDevices"}
+		args := []string{"generate", "migration", "addDevices"}
 
 		g := Generator{
 			testPrefix: "testfile001",

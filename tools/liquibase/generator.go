@@ -27,14 +27,12 @@ func (g Generator) Name() string {
 }
 
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
-
 	ret, err := g.genPath(args, root)
 	if err != nil {
 		return err
 	}
+
 	path := ret[0]
-	name := ret[1]
-	timestamp := ret[2]
 	_, err = os.Stat(path)
 	if err == nil {
 		fmt.Println("file/directory already exist ")
@@ -42,46 +40,53 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return nil
 	}
 
-	if os.IsNotExist(err) {
-		err := os.MkdirAll(filepath.Dir(path), 0755)
-		if err != nil {
-			return (err)
-		}
-
-		tmpl, err := template.New("[timestamp]-[name-underscore].xml").Parse(mainTemplate)
-		if err != nil {
-			return err
-		}
-
-		data := struct {
-			Name string
-			Time string
-		}{
-			Name: name,
-			Time: timestamp,
-		}
-		var tpl bytes.Buffer
-		if err := tmpl.Execute(&tpl, data); err != nil {
-			return err
-		}
-
-		err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
-		if err != nil {
-			return err
-		}
+	if !os.IsNotExist(err) {
+		return err
 	}
+
+	err = os.MkdirAll(filepath.Dir(path), 0755)
+	if err != nil {
+		return (err)
+	}
+
+	tmpl, err := template.New("[timestamp]-[name-underscore].xml").Parse(mainTemplate)
+	if err != nil {
+		return err
+	}
+
+	data := struct {
+		Name string
+		Time string
+	}{
+		Name: ret[1],
+		Time: ret[2],
+	}
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, data)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("[info] migration generated in %v\n", path)
 	return nil
+
 }
 
 //Genpath retunrs the path, the name of the file and the timestamp
 func (g Generator) genPath(args []string, root string) ([]string, error) {
 	var ret []string
-	name := filepath.Base(args[3])
+	name := filepath.Base(args[2])
 	if name == "." || name == "/" {
 		return ret, ErrName
 	}
 
-	dir := filepath.Dir(args[3])
+	dir := filepath.Dir(args[2])
 	if name == "." && dir == "." {
 		return ret, ErrName
 	}

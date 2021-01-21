@@ -2,6 +2,7 @@ package template
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -27,6 +28,8 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return err
 	}
 
+	fmt.Printf("[info] Template generated in app/templates/%s.plush.html \n", args[2])
+
 	return nil
 }
 
@@ -42,9 +45,13 @@ func (g Generator) generateTemplate(root, filename string) error {
 		return errors.Errorf("template already exists")
 	}
 
+	if err := os.MkdirAll(filepath.Dir(tmpl), 0755); err != nil {
+		return errors.Wrap(err, "error creating subfolders")
+	}
+
 	file, err := os.Create(tmpl)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error creating file")
 	}
 
 	defer file.Close()
