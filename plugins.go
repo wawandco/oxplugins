@@ -53,8 +53,8 @@ var Base = []plugins.Plugin{
 
 	// Generators
 	&ox.Generator{},
-	&model.Generator{},
 	&template.Generator{},
+	&model.Generator{},
 
 	// Initializer
 	&refresh.Initializer{},

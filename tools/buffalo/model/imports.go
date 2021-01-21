@@ -8,6 +8,7 @@ import (
 func buildImports(attrs []attr) []string {
 	imps := map[string]bool{
 		"encoding/json": true,
+		"log":           true,
 	}
 
 	ats := attrs

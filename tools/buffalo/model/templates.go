@@ -26,7 +26,10 @@ type {{ pluralize .Name }} []{{ properize .Name }}
 
 // String converts the struct into a string value
 func ({{ .Char }} {{ properize .Name }}) String() string {
-	js, _ := json.Marshal({{ .Char }})
+	js, err := json.Marshal({{ .Char }})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return string(js)
 }
