@@ -78,7 +78,7 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 
 }
 
-//Genpath retunrs the path, the name of the file and the timestamp
+//Genpath returns the path, the name of the file and the timestamp
 func (g Generator) genPath(args []string, root string) ([]string, error) {
 	var ret []string
 	name := filepath.Base(args[2])
