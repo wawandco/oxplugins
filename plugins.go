@@ -8,6 +8,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
+	"github.com/wawandco/oxplugins/tools/buffalo/model"
 	"github.com/wawandco/oxplugins/tools/buffalo/template"
 	"github.com/wawandco/oxplugins/tools/cli/help"
 	"github.com/wawandco/oxplugins/tools/docker"
@@ -53,6 +54,7 @@ var Base = []plugins.Plugin{
 	// Generators
 	&ox.Generator{},
 	&template.Generator{},
+	&model.Generator{},
 
 	// Initializer
 	&refresh.Initializer{},
