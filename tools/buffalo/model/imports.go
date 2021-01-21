@@ -6,10 +6,7 @@ import (
 )
 
 func buildImports(attrs []attr) []string {
-	imps := map[string]bool{
-		"encoding/json": true,
-		"log":           true,
-	}
+	imps := map[string]bool{}
 
 	ats := attrs
 	for _, a := range ats {
