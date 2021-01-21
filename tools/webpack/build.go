@@ -41,7 +41,6 @@ func (w Plugin) packageManagerType(root string) string {
 // - that yarn or npm is installed in the system.
 func (w Plugin) Build(ctx context.Context, root string, args []string) error {
 	var cmd *exec.Cmd
-
 	switch w.packageManagerType(root) {
 	case javascriptPackageManagerYarn:
 		cmd = exec.CommandContext(ctx, "yarn", "run", "build")
