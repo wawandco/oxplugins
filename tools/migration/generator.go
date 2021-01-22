@@ -2,10 +2,13 @@ package migration
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/gobuffalo/flect"
 	"github.com/pkg/errors"
 	"github.com/wawandco/oxplugins/tools/migration/creator"
 )
@@ -41,9 +44,14 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return err
 	}
 
+	args[3] = flect.Underscore(flect.Pluralize(strings.ToLower(args[3])))
 	if err = creator.Create(dirPath, args[3:]); err != nil {
 		return errors.Wrap(err, "failed creating migrations")
 	}
+
+	timestamp := time.Now().UTC().Format("20060102150405")
+	fileName := fmt.Sprintf("%s_%s", timestamp, args[3])
+	fmt.Printf("[info] Migrations generated in: \n-- migrations/%s.up.%s\n-- migrations/%s.down.%s\n", fileName, creator.Name(), fileName, creator.Name())
 
 	return nil
 }

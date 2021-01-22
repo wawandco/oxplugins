@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
-	"github.com/gobuffalo/flect"
 	"github.com/pkg/errors"
 )
 
@@ -21,8 +19,8 @@ func (s SQLCreator) Name() string {
 
 // Create will create 2 .sql empty files for the migration
 func (s *SQLCreator) Create(dir string, args []string) error {
+	name := args[0]
 	timestamp := time.Now().UTC().Format("20060102150405")
-	name := flect.Underscore(flect.Pluralize(strings.ToLower(args[0])))
 	fileName := fmt.Sprintf("%s_%s", timestamp, name)
 
 	if err := s.createFile(dir, fileName, "up"); err != nil {
