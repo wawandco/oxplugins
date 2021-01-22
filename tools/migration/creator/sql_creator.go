@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
-	"github.com/gobuffalo/flect"
 	"github.com/pkg/errors"
 )
 
 // SQLCreator model struct for fizz generation files
-type SQLCreator struct{}
+type SQLCreator struct {
+	opts opts
+}
 
 // Name is the name of the migration type
 func (s SQLCreator) Name() string {
@@ -20,9 +20,10 @@ func (s SQLCreator) Name() string {
 }
 
 // Create will create 2 .sql empty files for the migration
-func (s SQLCreator) Create(dir string, args []string) error {
+func (s *SQLCreator) Create(dir string, args []string) error {
 	timestamp := time.Now().UTC().Format("20060102150405")
-	fileName := fmt.Sprintf("%s_%s", timestamp, flect.Underscore(strings.ToLower(args[0])))
+	s.opts = newOptions(args)
+	fileName := fmt.Sprintf("%s_%s", timestamp, s.opts.TableName)
 
 	if err := s.createFile(dir, fileName, "up"); err != nil {
 		return err
@@ -35,7 +36,7 @@ func (s SQLCreator) Create(dir string, args []string) error {
 	return nil
 }
 
-func (s SQLCreator) createFile(dir, name, runFlag string) error {
+func (s *SQLCreator) createFile(dir, name, runFlag string) error {
 	fileName := fmt.Sprintf("%s.%s.sql", name, runFlag)
 	file, err := os.Create(filepath.Join(dir, fileName))
 	if err != nil {

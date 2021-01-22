@@ -3,8 +3,8 @@ package creator
 import "github.com/pkg/errors"
 
 var creations = []Creator{
-	FizzCreator{},
-	SQLCreator{},
+	&FizzCreator{},
+	&SQLCreator{},
 }
 
 // CreateMigrationFor selects the correct creation implemention
