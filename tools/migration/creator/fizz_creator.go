@@ -23,7 +23,7 @@ func (f FizzCreator) Name() string {
 
 // Create will create 2 .fizz files for the migration
 func (f *FizzCreator) Create(dir string, args []string) error {
-	name := args[0]
+	name := flect.Underscore(flect.Pluralize(strings.ToLower(args[0])))
 	table := fizz.NewTable(name, map[string]interface{}{
 		"timestamps": false,
 	})
