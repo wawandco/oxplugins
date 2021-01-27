@@ -14,7 +14,7 @@ func Test_Generate(t *testing.T) {
 	t.Run("generate fizz migration", func(t *testing.T) {
 		dir := t.TempDir()
 
-		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "fizz", "users"}); err != nil {
+		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "users", "--type=fizz"}); err != nil {
 			t.Errorf("should not be error, but got %v", err)
 		}
 
@@ -40,7 +40,7 @@ func Test_Generate(t *testing.T) {
 	t.Run("generate sql migration", func(t *testing.T) {
 		dir := t.TempDir()
 
-		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "sql", "company"}); err != nil {
+		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "company", "--type=sql"}); err != nil {
 			t.Errorf("should not be error, but got %v", err)
 		}
 
@@ -63,10 +63,68 @@ func Test_Generate(t *testing.T) {
 		}
 	})
 
+	t.Run("generate invalid migration should error", func(t *testing.T) {
+		if err := g.Generate(context.Background(), t.TempDir(), []string{"generate", "migration", "company", "--type=invalid"}); err == nil {
+			t.Errorf("should be error, but got %v", err)
+		}
+	})
+
+	t.Run("generate migration without type should generate fizz", func(t *testing.T) {
+		dir := t.TempDir()
+
+		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "templates"}); err != nil {
+			t.Errorf("should not be error, but got %v", err)
+		}
+
+		// Validating Files existence
+		match, err := filepath.Glob(filepath.Join(dir, "migrations", "*templates.*.fizz"))
+		if err != nil {
+			t.Errorf("searching for files should not error, but got %v", err)
+		}
+
+		if len(match) == 0 {
+			t.Error("migration files does not exists on the path")
+		}
+
+		if !strings.HasSuffix(match[0], "_templates.down.fizz") {
+			t.Error("'templates.up.fizz' file does not exists on the path")
+		}
+
+		if !strings.HasSuffix(match[1], "_templates.up.fizz") {
+			t.Error("'templates.down.fizz' file does not exists on the path")
+		}
+	})
+
+	t.Run("generate migration with empty type should generate fizz", func(t *testing.T) {
+		dir := t.TempDir()
+
+		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "invoices", "--type"}); err != nil {
+			t.Errorf("should not be error, but got %v", err)
+		}
+
+		// Validating Files existence
+		match, err := filepath.Glob(filepath.Join(dir, "migrations", "*invoices.*.fizz"))
+		if err != nil {
+			t.Errorf("searching for files should not error, but got %v", err)
+		}
+
+		if len(match) == 0 {
+			t.Error("migration files does not exists on the path")
+		}
+
+		if !strings.HasSuffix(match[0], "_invoices.down.fizz") {
+			t.Error("'invoices.up.fizz' file does not exists on the path")
+		}
+
+		if !strings.HasSuffix(match[1], "_invoices.up.fizz") {
+			t.Error("'invoices.down.fizz' file does not exists on the path")
+		}
+	})
+
 	t.Run("generate fizz migration with args", func(t *testing.T) {
 		dir := t.TempDir()
 
-		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "fizz", "users", "description:string", "quantity:int"}); err != nil {
+		if err := g.Generate(context.Background(), dir, []string{"generate", "migration", "users", "description:string", "quantity:int"}); err != nil {
 			t.Errorf("should not be error, but got %v", err)
 		}
 
