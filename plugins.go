@@ -34,6 +34,7 @@ var Base = []plugins.Plugin{
 	&webpack.Plugin{},
 	&refresh.Plugin{},
 	&yarn.Plugin{},
+	&envy.Developer{},
 
 	// Developer Lifecycle plugins
 	&build.Command{},
