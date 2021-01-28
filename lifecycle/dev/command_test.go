@@ -11,16 +11,19 @@ import (
 
 type (
 	plugin struct {
-		ranAt time.Time
-		ran   bool
+		ran bool
 	}
 
 	developer struct {
 		plugin
+
+		ranAt time.Time
 	}
 
 	beforeDeveloper struct {
 		plugin
+
+		ranAt time.Time
 	}
 )
 
