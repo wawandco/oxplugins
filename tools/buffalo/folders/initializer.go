@@ -12,6 +12,10 @@ import (
 )
 
 var (
+	ErrFolderExists = errors.New("folder exists")
+
+	// Folders that will be created when the initializer runs
+	// the [name] parts will be replaced by the name of the app.
 	folders = []string{
 		filepath.Join("[name]"),
 		filepath.Join("[name]", "public"),
@@ -31,7 +35,12 @@ var (
 )
 
 // Initializer is in charge of building the bones of the
-// Buffalo application.
+// Buffalo application. it will use the name argument and take the
+// base part of it to build the folders.
+// Some examples:
+// - `ox new bongo` 					=> creates the new app in the bongo folder
+// - `ox new github.com/wawandco/bongo` => creates the new app in the bongo folder
+// - `ox new wawandco/bongo` 			=> creates the new app in the bongo folder
 type Initializer struct {
 	// force folder creation if exists.
 	force bool
@@ -39,16 +48,29 @@ type Initializer struct {
 	flags *pflag.FlagSet
 }
 
+// Name of the plugin
 func (i Initializer) Name() string {
 	return "buffalo/initializer"
 }
 
+// Initialize the app by creating the needed folders. It will infer the name of the
+// folder from the args passed.
 func (i *Initializer) Initialize(ctx context.Context, root string, args []string) error {
 	if len(args) < 2 {
 		return errors.New("name must be specified")
 	}
 
-	name := args[1]
+	name := filepath.Base(args[1])
+	base := filepath.Join(root, name)
+	if _, err := os.Stat(base); err == nil && !i.force {
+		return ErrFolderExists
+	}
+
+	err := os.RemoveAll(base)
+	if err != nil {
+		return err
+	}
+
 	for _, v := range folders {
 		v = strings.ReplaceAll(v, "[name]", name)
 		v = filepath.Join(root, v)
