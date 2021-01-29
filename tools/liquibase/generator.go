@@ -1,11 +1,15 @@
 package liquibase
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
+	"text/template"
 	"time"
 
 	"github.com/gobuffalo/flect"
@@ -34,9 +38,10 @@ func (g Generator) Name() string {
 }
 
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
-	if len(args) == 0 {
-		return
+	if len(args) < 3 {
+		return ErrNameArgMissing
 	}
+
 	timestamp := time.Now().UTC().Format("20060102150405")
 	if g.mockTimestamp != "" {
 		timestamp = g.mockTimestamp
@@ -63,31 +68,27 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return err
 	}
 
-	// err = os.MkdirAll(filepath.Dir(path), 0755)
-	// if err != nil {
-	// 	return (err)
-	// }
+	// Creating the folder
+	err = os.MkdirAll(filepath.Dir(path), 0755)
+	if err != nil {
+		return (err)
+	}
 
-	// d := data{
-	// 	Filename:  filename,
-	// 	Timestamp: timestamp,
-	// }
+	tmpl, err := template.New("migration-template").Parse(migrationTemplate)
+	if err != nil {
+		return err
+	}
 
-	// tmpl, err := template.New("[timestamp]-[name-underscore].xml").Parse(mainTemplate)
-	// if err != nil {
-	// 	return err
-	// }
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, strings.ReplaceAll(filename, ".xml", ""))
+	if err != nil {
+		return err
+	}
 
-	// var tpl bytes.Buffer
-	// err = tmpl.Execute(&tpl, data)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
-	// if err != nil {
-	// 	return err
-	// }
+	err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
+	if err != nil {
+		return err
+	}
 
 	fmt.Printf("[info] migration generated in %v\n", path)
 	return nil
