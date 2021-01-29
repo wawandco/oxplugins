@@ -26,21 +26,12 @@ func TestRun(t *testing.T) {
 		t.Error("should return an error")
 	}
 
-	err = pl.Run(context.Background(), root, []string{"app"})
+	err = pl.Run(context.Background(), root, []string{"new", "app"})
 	if err != nil {
 		t.Errorf("should not return and error, got: %v", err)
 	}
 
 	//Should create the folder
-	fi, err := os.Stat(filepath.Join(root, "app"))
-	if err != nil {
-		t.Errorf("should not return and error, got: %v", err)
-	}
-
-	if !fi.IsDir() {
-		t.Errorf("should be a folder, got a file")
-	}
-
 	if !tinit.called {
 		t.Errorf("should have called initializer")
 	}
@@ -49,8 +40,8 @@ func TestRun(t *testing.T) {
 		t.Errorf("should have called afterinitialize")
 	}
 
-	if tinit.root != filepath.Join(root, "app") {
-		t.Errorf("should call initializer with root being: %v", filepath.Join(root, "app"))
+	if tinit.root != filepath.Join(root) {
+		t.Errorf("should call initializer with root being: %v", filepath.Join(root))
 	}
 }
 
