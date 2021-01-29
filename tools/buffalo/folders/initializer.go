@@ -42,6 +42,8 @@ var (
 // - `ox new bongo` 					=> creates the new app in the bongo folder
 // - `ox new github.com/wawandco/bongo` => creates the new app in the bongo folder
 // - `ox new wawandco/bongo` 			=> creates the new app in the bongo folder
+// It will fail if the existing folder exists, if you want to replace existing
+// folder use the --force option.
 type Initializer struct {
 	// force folder creation if exists.
 	force bool
