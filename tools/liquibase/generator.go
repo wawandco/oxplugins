@@ -14,12 +14,20 @@ import (
 
 	"github.com/gobuffalo/flect"
 	"github.com/spf13/pflag"
+	"github.com/wawandco/oxplugins/plugins"
 )
 
 var (
 	ErrNameArgMissing = errors.New("name arg missing")
 	ErrInvalidName    = errors.New("invalid migration name")
 	ErrInvalidPath    = errors.New("invalid path")
+)
+
+var (
+	// Ensuring we're building a plugin
+	_ plugins.Plugin = (*Generator)(nil)
+	// Ensuring the plugin is a flagparser
+	_ plugins.FlagParser = (*Generator)(nil)
 )
 
 // Generator for liquibase SQL migrations, it generates xml liquibase
@@ -47,6 +55,9 @@ func (g Generator) Name() string {
 	return "migration"
 }
 
+// Generate a new migration based on the passed args. This needs at least 3
+// args since the 3rd arg will be used by the generator to build the name of
+// the migration.
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
 	if len(args) < 3 {
 		return ErrNameArgMissing
@@ -104,6 +115,8 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	return nil
 }
 
+// composeFilename from the passed arg and timestamp, if the passed path is
+// a dot (.) or a folder "/" then it will return ErrInvalidName.
 func (g Generator) composeFilename(passed, timestamp string) (string, error) {
 	name := filepath.Base(passed)
 	//Should we check the name here ?
@@ -117,12 +130,14 @@ func (g Generator) composeFilename(passed, timestamp string) (string, error) {
 	return result, nil
 }
 
+// Parseflags will parse the baseFolder from the --base or -b flag
 func (g *Generator) ParseFlags(args []string) {
 	g.flags = pflag.NewFlagSet(g.Name(), pflag.ContinueOnError)
 	g.flags.StringVarP(&g.baseFolder, "base", "b", "", "base folder for the migrations")
 	g.flags.Parse(args) //nolint:errcheck,we don't care hence the flag
 }
 
+// Flags parsed by the plugin
 func (g *Generator) Flags() *pflag.FlagSet {
 	return g.flags
 }
