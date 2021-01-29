@@ -8,12 +8,11 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
+	"github.com/wawandco/oxplugins/tools/buffalo/folders"
 	"github.com/wawandco/oxplugins/tools/buffalo/model"
 	"github.com/wawandco/oxplugins/tools/buffalo/template"
 	"github.com/wawandco/oxplugins/tools/cli/help"
-	"github.com/wawandco/oxplugins/tools/docker"
 	"github.com/wawandco/oxplugins/tools/envy"
-	"github.com/wawandco/oxplugins/tools/flect"
 	"github.com/wawandco/oxplugins/tools/grift"
 	"github.com/wawandco/oxplugins/tools/migration"
 	"github.com/wawandco/oxplugins/tools/node"
@@ -59,9 +58,10 @@ var Base = []plugins.Plugin{
 	&migration.Generator{},
 
 	// Initializer
-	&refresh.Initializer{},
-	&flect.Initializer{},
-	&docker.Initializer{},
+	&folders.Initializer{},
+	// &refresh.Initializer{},
+	// &flect.Initializer{},
+	// &docker.Initializer{},
 
 	// Testers
 	&standard.Tester{},
