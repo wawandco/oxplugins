@@ -12,6 +12,7 @@ import (
 )
 
 var (
+	ErrNameNeeded   = errors.New("app name must be specified")
 	ErrFolderExists = errors.New("folder exists")
 
 	// Folders that will be created when the initializer runs
@@ -57,7 +58,7 @@ func (i Initializer) Name() string {
 // folder from the args passed.
 func (i *Initializer) Initialize(ctx context.Context, root string, args []string) error {
 	if len(args) < 2 {
-		return errors.New("name must be specified")
+		return ErrNameNeeded
 	}
 
 	name := filepath.Base(args[1])

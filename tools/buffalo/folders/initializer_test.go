@@ -36,8 +36,8 @@ func TestInitializerRun(t *testing.T) {
 	t.Run("invalid args", func(t *testing.T) {
 		i := Initializer{}
 		err := i.Initialize(context.Background(), "", []string{"new"})
-		if err == nil {
-			t.Errorf("err should not be nil but got nil")
+		if err != ErrNameNeeded {
+			t.Errorf("err should ne ErrNameNeeded but got %v", err)
 		}
 	})
 
