@@ -131,3 +131,36 @@ func TestLiquibaseGenerator(t *testing.T) {
 	})
 
 }
+
+func TestComposeName(t *testing.T) {
+	g := Generator{
+		testPrefix: "composename",
+	}
+
+	filename, err := g.composeName("addDevices")
+	if err != nil {
+		t.Errorf("err should be nil, got %v", err)
+	}
+
+	expected := "composename-add_devices.xml"
+	if filename != expected {
+		t.Errorf("filename should be %v, got %v", expected, filename)
+	}
+}
+
+func TestComposeNameInvalid(t *testing.T) {
+	g := Generator{
+		testPrefix: "composename",
+	}
+
+	_, err := g.composeName(".")
+	if err != ErrInvalidName {
+		t.Errorf("err should be ErrInvalidName, got %v", err)
+	}
+
+	_, err = g.composeName("/")
+	if err != ErrInvalidName {
+		t.Errorf("err should be ErrInvalidName, got %v", err)
+	}
+
+}

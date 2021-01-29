@@ -1,12 +1,9 @@
 package liquibase
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
-	"html/template"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
@@ -14,10 +11,20 @@ import (
 	"github.com/gobuffalo/flect"
 )
 
-var ErrName = errors.New("not valid path or name")
+var (
+	ErrNameArgMissing = errors.New("name arg missing")
+	ErrInvalidName    = errors.New("invalid migration name")
+	ErrInvalidPath    = errors.New("invalid path")
+)
 
 type Generator struct {
-	testPrefix string
+	// mockTimestamp is used for testing purposes, it would replace the
+	// timestamp at the beggining of the migration name.
+	mockTimestamp string
+
+	// Basefolder for the migrations, if a path is passed, then we will append that
+	// path to the baseFolder when generating the migration.
+	baseFolder string
 }
 
 // Name is the name used to identify the generator and also
@@ -27,16 +34,28 @@ func (g Generator) Name() string {
 }
 
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
-	ret, err := g.genPath(args, root)
+	if len(args) == 0 {
+		return
+	}
+	timestamp := time.Now().UTC().Format("20060102150405")
+	if g.mockTimestamp != "" {
+		timestamp = g.mockTimestamp
+	}
+
+	filename, err := g.composeFilename(args[2], timestamp)
 	if err != nil {
 		return err
 	}
 
-	path := ret[0]
+	path := g.baseFolder
+	if dir := filepath.Dir(args[2]); dir != "." {
+		path = filepath.Join(g.baseFolder, dir)
+	}
+
+	path = filepath.Join(path, filename)
 	_, err = os.Stat(path)
 	if err == nil {
-		fmt.Println("file/directory already exist ")
-
+		fmt.Printf("[info] %v already exists\n", path)
 		return nil
 	}
 
@@ -44,79 +63,70 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return err
 	}
 
-	err = os.MkdirAll(filepath.Dir(path), 0755)
-	if err != nil {
-		return (err)
-	}
+	// err = os.MkdirAll(filepath.Dir(path), 0755)
+	// if err != nil {
+	// 	return (err)
+	// }
 
-	tmpl, err := template.New("[timestamp]-[name-underscore].xml").Parse(mainTemplate)
-	if err != nil {
-		return err
-	}
+	// d := data{
+	// 	Filename:  filename,
+	// 	Timestamp: timestamp,
+	// }
 
-	data := struct {
-		Name string
-		Time string
-	}{
-		Name: ret[1],
-		Time: ret[2],
-	}
+	// tmpl, err := template.New("[timestamp]-[name-underscore].xml").Parse(mainTemplate)
+	// if err != nil {
+	// 	return err
+	// }
 
-	var tpl bytes.Buffer
-	err = tmpl.Execute(&tpl, data)
-	if err != nil {
-		return err
-	}
+	// var tpl bytes.Buffer
+	// err = tmpl.Execute(&tpl, data)
+	// if err != nil {
+	// 	return err
+	// }
 
-	err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
-	if err != nil {
-		return err
-	}
+	// err = ioutil.WriteFile(path, tpl.Bytes(), 0655)
+	// if err != nil {
+	// 	return err
+	// }
 
 	fmt.Printf("[info] migration generated in %v\n", path)
 	return nil
-
 }
 
-//Genpath returns the path, the name of the file and the timestamp
-func (g Generator) genPath(args []string, root string) ([]string, error) {
-	var ret []string
-	name := filepath.Base(args[2])
-	if name == "." || name == "/" {
-		return ret, ErrName
-	}
+// // Genpath returns the path, the name of the file and the timestamp
+// func (g Generator) genPath(args []string, root string) ([]string, error) {
+// 	var ret []string
+// 	dir := filepath.Dir(args[2])
+// 	if name == "." && dir == "." {
+// 		return ret, ErrName
+// 	}
 
-	dir := filepath.Dir(args[2])
-	if name == "." && dir == "." {
-		return ret, ErrName
+// 	underscoreName := flect.Underscore(name)
+// 	timestamp := time.Now().UTC().Format("20060102150405")
+// 	if g.testPrefix != "" {
+// 		timestamp = g.testPrefix
+// 	}
+
+// 	fullName := timestamp + "-" + underscoreName + ".xml"
+
+// 	path := filepath.Join(root, "migrations", fullName)
+// 	if dir != "." {
+// 		path = filepath.Join(root, "migrations", dir, fullName)
+// 	}
+// 	ret = append(ret, path, underscoreName, timestamp)
+
+// 	return ret, nil
+// }
+
+func (g Generator) composeFilename(passed, timestamp string) (string, error) {
+	name := filepath.Base(passed)
+	//Should we check the name here ?
+	if name == "." || name == "/" {
+		return "", ErrInvalidName
 	}
 
 	underscoreName := flect.Underscore(name)
-	timestamp := time.Now().UTC().Format("20060102150405")
-	if g.testPrefix != "" {
-		timestamp = g.testPrefix
-	}
+	result := timestamp + "-" + underscoreName + ".xml"
 
-	fullName := timestamp + "-" + underscoreName + ".xml"
-
-	path := filepath.Join(root, "migrations", fullName)
-	if dir != "." {
-		path = filepath.Join(root, "migrations", dir, fullName)
-	}
-	ret = append(ret, path, underscoreName, timestamp)
-
-	return ret, nil
-}
-
-func (g Generator) equal(a, b []string) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i, v := range a {
-		if v != b[i] {
-			return false
-
-		}
-	}
-	return true
+	return result, nil
 }
