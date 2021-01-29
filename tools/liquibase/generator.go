@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gobuffalo/flect"
+	"github.com/spf13/pflag"
 )
 
 var (
@@ -21,6 +22,13 @@ var (
 	ErrInvalidPath    = errors.New("invalid path")
 )
 
+// Generator for liquibase SQL migrations, it generates xml liquibase
+// for SQL in the root + basedir folder. It uses the argument passed
+// to determine both the name of the migration and the destination.
+// Some examples are:
+// - "ox generate migration name" generates [timestamp]-name.xml
+// - "ox generate migration folder/name" generates folder/[timestamp]-name.xml
+// - "ox generate migration name --base migrations" generates migrations/[timestamp]-name.xml
 type Generator struct {
 	// mockTimestamp is used for testing purposes, it would replace the
 	// timestamp at the beggining of the migration name.
@@ -29,6 +37,8 @@ type Generator struct {
 	// Basefolder for the migrations, if a path is passed, then we will append that
 	// path to the baseFolder when generating the migration.
 	baseFolder string
+
+	flags *pflag.FlagSet
 }
 
 // Name is the name used to identify the generator and also
@@ -94,31 +104,6 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	return nil
 }
 
-// // Genpath returns the path, the name of the file and the timestamp
-// func (g Generator) genPath(args []string, root string) ([]string, error) {
-// 	var ret []string
-// 	dir := filepath.Dir(args[2])
-// 	if name == "." && dir == "." {
-// 		return ret, ErrName
-// 	}
-
-// 	underscoreName := flect.Underscore(name)
-// 	timestamp := time.Now().UTC().Format("20060102150405")
-// 	if g.testPrefix != "" {
-// 		timestamp = g.testPrefix
-// 	}
-
-// 	fullName := timestamp + "-" + underscoreName + ".xml"
-
-// 	path := filepath.Join(root, "migrations", fullName)
-// 	if dir != "." {
-// 		path = filepath.Join(root, "migrations", dir, fullName)
-// 	}
-// 	ret = append(ret, path, underscoreName, timestamp)
-
-// 	return ret, nil
-// }
-
 func (g Generator) composeFilename(passed, timestamp string) (string, error) {
 	name := filepath.Base(passed)
 	//Should we check the name here ?
@@ -130,4 +115,14 @@ func (g Generator) composeFilename(passed, timestamp string) (string, error) {
 	result := timestamp + "-" + underscoreName + ".xml"
 
 	return result, nil
+}
+
+func (g *Generator) ParseFlags(args []string) {
+	g.flags = pflag.NewFlagSet(g.Name(), pflag.ContinueOnError)
+	g.flags.StringVarP(&g.baseFolder, "base", "b", "", "base folder for the migrations")
+	g.flags.Parse(args) //nolint:errcheck,we don't care hence the flag
+}
+
+func (g *Generator) Flags() *pflag.FlagSet {
+	return g.flags
 }
