@@ -1,9 +1,21 @@
 package refresh
 
 import (
+	"bytes"
 	"context"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
+	"text/template"
+)
+
+var (
+	// the filename we will use for the generated yml.
+	filename = `.buffalo.dev.yml`
+
+	ErrNameRequired = errors.New("name argument is required")
 )
 
 type Initializer struct{}
@@ -13,65 +25,43 @@ func (i Initializer) Name() string {
 }
 
 func (i *Initializer) Initialize(ctx context.Context, root string, args []string) error {
-	// check for database.dev.yml file in root location
-	rootYml := root + "/.buffalo.dev.yml"
+	if len(args) < 2 {
+		return ErrNameRequired
+	}
 
-	content := `app_root: .
-	build_target_path : ./cmd/app
-	ignored_folders:
-	- vendor
-	- log
-	- logs
-	- assets
-	- public
-	- grifts
-	- tmp
-	- bin
-	- node_modules
-	- .sass-cache
-	included_extensions:
-	- .go
-	- .env
-	build_path: bin
-	build_delay: 200ns
-	binary_name: tmp-build
-	command_flags: []
-	enable_colors: true
-	log_name: ox`
+	name := filepath.Base(args[1])
+	folder := filepath.Join(root, name)
+	rootYML := filepath.Join(folder, filename)
 
-	_, err := os.Stat(rootYml)
+	err := os.MkdirAll(folder, 0777)
+	if err != nil {
+		return err
+	}
+
+	_, err = os.Stat(rootYML)
 	if err == nil {
-
-		fmt.Println(".buffalo.dev.yml file already exist")
+		fmt.Printf("%v already exist\n", filename)
 		return nil
-
 	}
-	if os.IsNotExist(err) {
 
-		// create file if it does not exist
-		file, err := os.Create(rootYml)
-
-		if err != nil {
-			fmt.Println("alo alo")
-			return (err)
-		}
-
-		_, err = os.OpenFile(rootYml, os.O_RDWR, 0644)
-		if err != nil {
-			fmt.Println("alo alo")
-			return (err)
-		}
-
-		_, err = file.WriteString(content)
-		if err != nil {
-			return (err)
-		}
-
-		file.Close()
-
-		return nil
-
+	if !os.IsNotExist(err) {
+		return err
 	}
-	return err
 
+	t, err := template.New("refresh").Parse(templateFile)
+	if err != nil {
+		return err
+	}
+
+	var tpl bytes.Buffer
+	if err := t.Execute(&tpl, name); err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(rootYML, tpl.Bytes(), 0777)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
