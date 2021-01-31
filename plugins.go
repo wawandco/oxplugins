@@ -60,7 +60,7 @@ var Base = []plugins.Plugin{
 
 	// Initializer
 	&folders.Initializer{},
-	// &refresh.Initializer{},
+	&refresh.Initializer{},
 	// &flect.Initializer{},
 	// &docker.Initializer{},
 

@@ -9,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"text/template"
+
+	"github.com/spf13/pflag"
 )
 
 var (
@@ -64,4 +66,9 @@ func (i *Initializer) Initialize(ctx context.Context, root string, args []string
 	}
 
 	return nil
+}
+
+func (i *Initializer) ParseFlags([]string) {}
+func (i *Initializer) Flags() *pflag.FlagSet {
+	return pflag.NewFlagSet("refresh-initializer", pflag.ContinueOnError)
 }
