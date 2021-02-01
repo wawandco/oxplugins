@@ -125,13 +125,21 @@ func (g Generator) createActionTestFile() error {
 
 func (g Generator) createActionTemplate(root string) error {
 	filename := g.filename + ".plush.html"
-	path := filepath.Join(root, "app", "templates", filename)
+	path := filepath.Join(root, "app", "templates")
+	err := os.Mkdir(path, 700)
 
-	if !g.exists(path) {
-		err := os.MkdirAll(path, 0700)
+	if err != nil {
+		return err
+	}
 
+	filePath := filepath.Join(path, filename)
+
+	if !g.exists(filePath) {
+		var tpl bytes.Buffer
+
+		err := ioutil.WriteFile(filePath, tpl.Bytes(), 700)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "writing new template error")
 		}
 	}
 	return nil
