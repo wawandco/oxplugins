@@ -9,7 +9,7 @@ import (
 var actionTemplate string = `package actions
 
 func {{ properize .Name }}(c buffalo.Context) error {
-	return nil
+	return c.Render(200, r.HTML("{{.Name}}.plush.html"))
 }
 `
 var actionTestTemplate string = `package actions
