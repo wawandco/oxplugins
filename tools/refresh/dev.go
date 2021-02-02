@@ -17,6 +17,7 @@ func (w Plugin) Develop(ctx context.Context, root string) error {
 	}
 
 	r := refresh.NewWithContext(config, ctx)
+
 	return r.Start()
 }
 

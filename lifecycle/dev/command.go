@@ -3,9 +3,9 @@ package dev
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/wawandco/oxplugins/plugins"
+	"golang.org/x/sync/errgroup"
 )
 
 var _ plugins.Command = (*Command)(nil)
@@ -41,22 +41,23 @@ func (d *Command) Run(ctx context.Context, root string, args []string) error {
 		}
 	}
 
-	var wg sync.WaitGroup
-	for _, tool := range d.developers {
-		// Each of the tools runs in parallel
-		wg.Add(1)
-		go func(t Developer) {
-			err := t.Develop(ctx, root)
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	wg := &errgroup.Group{}
+	for _, d := range d.developers {
+		g := d.Develop
+		wg.Go(func() error {
+			err := g(ctx, root)
 			if err != nil {
 				fmt.Println(err)
 			}
 
-			wg.Done()
-		}(tool)
+			return nil
+		})
 	}
 
-	wg.Wait()
-	return nil
+	return wg.Wait()
 }
 
 // Receive Developer and BeforeDeveloper plugins and store these
