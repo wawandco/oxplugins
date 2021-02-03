@@ -9,6 +9,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
 	"github.com/wawandco/oxplugins/tools/buffalo/action"
+	"github.com/wawandco/oxplugins/tools/buffalo/app"
 	"github.com/wawandco/oxplugins/tools/buffalo/cmd"
 	"github.com/wawandco/oxplugins/tools/buffalo/embedded"
 	"github.com/wawandco/oxplugins/tools/buffalo/folders"
@@ -52,6 +53,7 @@ var Base = []plugins.Plugin{
 	&embedded.Initializer{},
 	&template.Initializer{},
 	&cmd.Initializer{},
+	&app.Initializer{},
 
 	// Testers
 	&test.Command{},

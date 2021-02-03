@@ -21,7 +21,7 @@ var (
 type Initializer struct{}
 
 func (i Initializer) Name() string {
-	return "model/initializer"
+	return "template/initializer"
 }
 
 func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {

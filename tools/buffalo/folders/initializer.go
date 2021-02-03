@@ -26,6 +26,7 @@ var (
 		filepath.Join("[name]", "config"),
 		filepath.Join("[name]", "app"),
 		filepath.Join("[name]", "app", "actions"),
+		filepath.Join("[name]", "app", "middleware"),
 		filepath.Join("[name]", "app", "assets"),
 		filepath.Join("[name]", "app", "assets", "js"),
 		filepath.Join("[name]", "app", "assets", "css"),
@@ -54,7 +55,7 @@ type Initializer struct {
 
 // Name of the plugin
 func (i Initializer) Name() string {
-	return "buffalo/initializer"
+	return "folders/initializer"
 }
 
 // Initialize the app by creating the needed folders. It will infer the name of the

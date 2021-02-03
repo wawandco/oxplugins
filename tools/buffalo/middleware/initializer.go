@@ -1,10 +1,11 @@
-package embedded
+package app
 
 import (
 	"bytes"
 	"context"
 	"errors"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
@@ -20,11 +21,11 @@ var (
 type Initializer struct{}
 
 func (i Initializer) Name() string {
-	return "embedded/initializer"
+	return "middleware/initializer"
 }
 
 func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
-	n, ok := dx.Load("name")
+	m, ok := dx.Load("module")
 	if !ok {
 		return ErrIncompleteArgs
 	}
@@ -34,19 +35,29 @@ func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
 		return ErrIncompleteArgs
 	}
 
-	tmpl, err := template.New("models.go").Parse(embedGo)
+	folder := filepath.Join(f.(string), "app", "middleware")
+	err := os.MkdirAll(folder, 0777)
+	if err != nil {
+		return err
+	}
+
+	tmpl, err := template.New("middleware.go").Parse(middlewareGo)
 	if err != nil {
 		return err
 	}
 
 	sbf := bytes.NewBuffer([]byte{})
-	err = tmpl.Execute(sbf, n.(string))
-
+	err = tmpl.Execute(sbf, struct {
+		Module string
+	}{
+		Module: m.(string),
+	})
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(filepath.Join(f.(string), "embed.go"), sbf.Bytes(), 0777)
+	path := filepath.Join(folder, "middleware.go")
+	err = ioutil.WriteFile(path, sbf.Bytes(), 0777)
 	if err != nil {
 		return err
 	}

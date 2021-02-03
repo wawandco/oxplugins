@@ -1,4 +1,4 @@
-package cmd
+package app
 
 import (
 	"bytes"
@@ -21,7 +21,7 @@ var (
 type Initializer struct{}
 
 func (i Initializer) Name() string {
-	return "cmd/initializer"
+	return "model/initializer"
 }
 
 func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
@@ -40,24 +40,51 @@ func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
 		return ErrIncompleteArgs
 	}
 
-	folder := filepath.Join(f.(string), "cmd", n.(string))
+	folder := filepath.Join(f.(string), "app")
 	err := os.MkdirAll(folder, 0777)
 	if err != nil {
 		return err
 	}
 
-	tmpl, err := template.New("main.go").Parse(mainGo)
+	tmpl, err := template.New("app.go").Parse(appGo)
 	if err != nil {
 		return err
 	}
 
 	sbf := bytes.NewBuffer([]byte{})
-	err = tmpl.Execute(sbf, m.(string))
+	err = tmpl.Execute(sbf, struct {
+		Module, Name string
+	}{
+		Module: m.(string),
+		Name:   n.(string),
+	})
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(filepath.Join(folder, "main.go"), sbf.Bytes(), 0777)
+	path := filepath.Join(folder, "app.go")
+	err = ioutil.WriteFile(path, sbf.Bytes(), 0777)
+	if err != nil {
+		return err
+	}
+
+	tmpl, err = template.New("routes.go").Parse(routesGo)
+	if err != nil {
+		return err
+	}
+
+	sbf = bytes.NewBuffer([]byte{})
+	err = tmpl.Execute(sbf, struct {
+		Module, Name string
+	}{
+		Module: m.(string),
+		Name:   n.(string),
+	})
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(filepath.Join(folder, "routes.go"), sbf.Bytes(), 0777)
 	if err != nil {
 		return err
 	}
