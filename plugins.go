@@ -59,6 +59,7 @@ var Base = []plugins.Plugin{
 	// Initializer
 	&folders.Initializer{},
 	&refresh.Initializer{},
+	&model.Initializer{},
 	// &flect.Initializer{},
 	// &docker.Initializer{},
 

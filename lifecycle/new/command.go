@@ -45,6 +45,7 @@ func (d *Command) Run(ctx context.Context, root string, args []string) error {
 	dx.Store("root", root)
 	dx.Store("folder", filepath.Join(root, name))
 	dx.Store("name", name)
+	dx.Store("module", args[1])
 
 	for _, ini := range d.initializers {
 		err := ini.Initialize(ctx, dx)
