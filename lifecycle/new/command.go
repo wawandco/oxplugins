@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"path/filepath"
+	"sync"
 
 	"github.com/wawandco/oxplugins/plugins"
 )
@@ -31,15 +32,22 @@ func (d Command) HelpText() string {
 	return "Generates a new app with registered plugins"
 }
 
-// Run calls NPM or yarn to start webpack watching the assets
-// Also starts refresh listening for the changes in Go files.
+// Run
 func (d *Command) Run(ctx context.Context, root string, args []string) error {
 	if len(args) < 2 {
 		return ErrNoNameProvided
 	}
 
+	name := filepath.Base(args[1])
+
+	var dx sync.Map
+	dx.Store("args", args)
+	dx.Store("root", root)
+	dx.Store("folder", filepath.Join(root, name))
+	dx.Store("name", name)
+
 	for _, ini := range d.initializers {
-		err := ini.Initialize(ctx, root, args)
+		err := ini.Initialize(ctx, dx)
 		if err != nil {
 			return err
 		}

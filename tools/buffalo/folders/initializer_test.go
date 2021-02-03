@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -17,8 +18,14 @@ func TestInitializerRun(t *testing.T) {
 			t.Fatal("could not move to temp dir")
 		}
 
+		var dx sync.Map
+		dx.Store("root", root)
+		dx.Store("name", "app")
+		dx.Store("args", []string{"new", "app"})
+		dx.Store("folder", filepath.Join(root, "app"))
+
 		i := Initializer{}
-		err = i.Initialize(context.Background(), root, []string{"new", "app"})
+		err = i.Initialize(context.Background(), dx)
 		if err != nil {
 			t.Errorf("err should be nil but got %v", err)
 		}
@@ -35,7 +42,9 @@ func TestInitializerRun(t *testing.T) {
 
 	t.Run("invalid args", func(t *testing.T) {
 		i := Initializer{}
-		err := i.Initialize(context.Background(), "", []string{"new"})
+		var dx sync.Map
+
+		err := i.Initialize(context.Background(), dx)
 		if err != ErrNameNeeded {
 			t.Errorf("err should ne ErrNameNeeded but got %v", err)
 		}
@@ -48,8 +57,14 @@ func TestInitializerRun(t *testing.T) {
 			t.Fatal("could not move to temp dir")
 		}
 
+		var dx sync.Map
+		dx.Store("root", root)
+		dx.Store("name", "app")
+		dx.Store("args", []string{"new", "app"})
+		dx.Store("folder", filepath.Join(root, "app"))
+
 		i := Initializer{}
-		err = i.Initialize(context.Background(), root, []string{"new", "github.com/paganotoni/app"})
+		err = i.Initialize(context.Background(), dx)
 		if err != nil {
 			t.Errorf("err should be nil but got %v", err)
 		}
@@ -72,8 +87,14 @@ func TestInitializerRun(t *testing.T) {
 			t.Fatal("could not create dir")
 		}
 
+		var dx sync.Map
+		dx.Store("root", root)
+		dx.Store("name", "app")
+		dx.Store("args", []string{"new", "app"})
+		dx.Store("folder", filepath.Join(root, "app"))
+
 		i := Initializer{}
-		err = i.Initialize(context.Background(), root, []string{"new", "app"})
+		err = i.Initialize(context.Background(), dx)
 		if err != ErrFolderExists {
 			t.Errorf("err should be ErrFolderExists but got %v", err)
 		}
@@ -91,8 +112,14 @@ func TestInitializerRun(t *testing.T) {
 			t.Fatal("could not create dir")
 		}
 
+		var dx sync.Map
+		dx.Store("root", root)
+		dx.Store("name", "app")
+		dx.Store("args", []string{"new", "app"})
+		dx.Store("folder", filepath.Join(root, "app"))
+
 		i := Initializer{force: true}
-		err = i.Initialize(context.Background(), root, []string{"new", "app"})
+		err = i.Initialize(context.Background(), dx)
 		if err != nil {
 			t.Errorf("err should be nil but got %v", err)
 		}

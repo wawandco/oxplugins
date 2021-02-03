@@ -7,13 +7,15 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/spf13/pflag"
 )
 
 var (
-	ErrNameNeeded   = errors.New("app name must be specified")
-	ErrFolderExists = errors.New("folder exists")
+	ErrNameNeeded     = errors.New("app name must be specified")
+	ErrFolderExists   = errors.New("folder exists")
+	ErrIncompleteArgs = errors.New("did not receive expected data")
 
 	// Folders that will be created when the initializer runs
 	// the [name] parts will be replaced by the name of the app.
@@ -23,9 +25,7 @@ var (
 		filepath.Join("[name]", "migrations"),
 		filepath.Join("[name]", "config"),
 		filepath.Join("[name]", "app"),
-		filepath.Join("[name]", "app", "models"),
 		filepath.Join("[name]", "app", "actions"),
-		filepath.Join("[name]", "app", "templates"),
 		filepath.Join("[name]", "app", "assets"),
 		filepath.Join("[name]", "app", "assets", "js"),
 		filepath.Join("[name]", "app", "assets", "css"),
@@ -59,13 +59,26 @@ func (i Initializer) Name() string {
 
 // Initialize the app by creating the needed folders. It will infer the name of the
 // folder from the args passed.
-func (i *Initializer) Initialize(ctx context.Context, root string, args []string) error {
-	if len(args) < 2 {
+func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
+	n, ok := dx.Load("name")
+	if !ok {
 		return ErrNameNeeded
 	}
 
-	name := filepath.Base(args[1])
-	base := filepath.Join(root, name)
+	r, ok := dx.Load("root")
+	if !ok {
+		return ErrIncompleteArgs
+	}
+
+	b, ok := dx.Load("folder")
+	if !ok {
+		return ErrIncompleteArgs
+	}
+
+	root := r.(string)
+	name := n.(string)
+	base := b.(string)
+
 	if _, err := os.Stat(base); err == nil && !i.force {
 		return ErrFolderExists
 	}

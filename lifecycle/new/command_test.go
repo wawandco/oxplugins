@@ -40,8 +40,16 @@ func TestRun(t *testing.T) {
 		t.Errorf("should have called afterinitialize")
 	}
 
-	if tinit.root != filepath.Join(root) {
-		t.Errorf("should call initializer with root being: %v", filepath.Join(root))
+	if tinit.root != root {
+		t.Errorf("should call initializer with root being: %v", root)
+	}
+
+	if tinit.name != "app" {
+		t.Errorf("should call initializer with folder being: %v", "app")
+	}
+	exp := filepath.Join(root, "app")
+	if tinit.folder != exp {
+		t.Errorf("should call initializer with folder being: %v", exp)
 	}
 }
 
