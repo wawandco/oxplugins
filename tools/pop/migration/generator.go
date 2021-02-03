@@ -11,7 +11,7 @@ import (
 	"github.com/gobuffalo/flect"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
-	"github.com/wawandco/oxplugins/tools/migration/creator"
+	"github.com/wawandco/oxplugins/tools/pop/migration/creator"
 )
 
 // Generator allows to identify model as a plugin

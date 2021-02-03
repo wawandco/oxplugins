@@ -15,7 +15,6 @@ import (
 	"github.com/wawandco/oxplugins/tools/envy"
 	"github.com/wawandco/oxplugins/tools/flect"
 	"github.com/wawandco/oxplugins/tools/grift"
-	"github.com/wawandco/oxplugins/tools/migration"
 	"github.com/wawandco/oxplugins/tools/node"
 	"github.com/wawandco/oxplugins/tools/ox"
 	"github.com/wawandco/oxplugins/tools/refresh"
@@ -57,7 +56,6 @@ var Base = []plugins.Plugin{
 	&ox.Generator{},
 	&template.Generator{},
 	&model.Generator{},
-	&migration.Generator{},
 
 	// Initializer
 	&refresh.Initializer{},

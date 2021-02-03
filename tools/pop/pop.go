@@ -4,8 +4,12 @@ import (
 	"github.com/gobuffalo/packd"
 	"github.com/wawandco/oxplugins/plugins"
 	"github.com/wawandco/oxplugins/tools/pop/migrate"
+	"github.com/wawandco/oxplugins/tools/pop/migration"
 )
 
 func Plugins(migrations packd.Box) []plugins.Plugin {
-	return migrate.Plugins(migrations)
+	result := migrate.Plugins(migrations)
+	result = append(result, &migration.Generator{})
+
+	return result
 }
