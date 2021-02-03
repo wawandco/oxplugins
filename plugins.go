@@ -8,7 +8,9 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
-	embedded "github.com/wawandco/oxplugins/tools/buffalo/embeded"
+	"github.com/wawandco/oxplugins/tools/buffalo/action"
+	"github.com/wawandco/oxplugins/tools/buffalo/cmd"
+	"github.com/wawandco/oxplugins/tools/buffalo/embedded"
 	"github.com/wawandco/oxplugins/tools/buffalo/folders"
 	"github.com/wawandco/oxplugins/tools/buffalo/model"
 	"github.com/wawandco/oxplugins/tools/buffalo/template"
@@ -27,45 +29,51 @@ import (
 // has other plugins this list is the base that is used across most of
 // the apps we do. Feel free to add the rest in your cmd/ox/main.go file.
 var Base = []plugins.Plugin{
+	// Help
 	&help.Command{},
+
+	// Builders
+	&build.Command{},
+	&node.Builder{},
+	&standard.Builder{},
+
+	// Generators
+	&generate.Command{},
+	&ox.Generator{},
+	&template.Generator{},
+	&model.Generator{},
+	&action.Generator{},
+
+	// Initializers
+	&new.Command{},
+	&folders.Initializer{},
+	&refresh.Initializer{},
+	&model.Initializer{},
+	&embedded.Initializer{},
+	&template.Initializer{},
+	&cmd.Initializer{},
+
+	// Testers
+	&test.Command{},
+	&standard.Tester{},
+	&envy.Tester{},
+
+	// Fixers
+	&fix.Command{},
+	&standard.Fixer{},
+
+	// Developer Lifecycle plugins
+	&dev.Command{},
+	&envy.Developer{},
 
 	// Tools plugins.
 	&webpack.Plugin{},
 	&refresh.Plugin{},
 	&yarn.Plugin{},
-	&envy.Developer{},
 
-	// Developer Lifecycle plugins
-	&build.Command{},
-	&dev.Command{},
-
-	&test.Command{},
-	&fix.Command{},
-	&generate.Command{},
-	&new.Command{},
-	&grift.Command{},
-
-	// Builders
-	&node.Builder{},
-	&standard.Builder{},
-
-	// Fixers
-	&standard.Fixer{},
-
-	// Generators
-	&ox.Generator{},
-	&template.Generator{},
-	&model.Generator{},
-
-	// Initializer
-	&folders.Initializer{},
-	&refresh.Initializer{},
-	&model.Initializer{},
-	&embedded.Initializer{},
 	// &flect.Initializer{},
 	// &docker.Initializer{},
 
-	// Testers
-	&standard.Tester{},
-	&envy.Tester{},
+	// Other
+	&grift.Command{},
 }
