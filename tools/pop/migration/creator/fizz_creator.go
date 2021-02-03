@@ -71,7 +71,7 @@ func (f *FizzCreator) createDownFile(dir, name string, table fizz.Table) error {
 
 	file, err := os.Create(path)
 	if err != nil {
-		return errors.Wrap(err, "error creating file")
+		return errors.Wrap(err, "error creating down file")
 	}
 
 	defer file.Close()
@@ -79,7 +79,7 @@ func (f *FizzCreator) createDownFile(dir, name string, table fizz.Table) error {
 	writer := bufio.NewWriter(file)
 	_, err = writer.WriteString(table.UnFizz())
 	if err != nil {
-		return errors.Wrap(err, "error writing file")
+		return errors.Wrap(err, "error writing down file")
 	}
 
 	writer.Flush()
@@ -93,7 +93,7 @@ func (f *FizzCreator) createUPFile(dir, name string, table fizz.Table) error {
 
 	file, err := os.Create(path)
 	if err != nil {
-		return errors.Wrap(err, "error creating file")
+		return errors.Wrap(err, "error creating up file")
 	}
 
 	defer file.Close()
@@ -101,7 +101,7 @@ func (f *FizzCreator) createUPFile(dir, name string, table fizz.Table) error {
 	writer := bufio.NewWriter(file)
 	_, err = writer.WriteString(table.Fizz())
 	if err != nil {
-		return errors.Wrap(err, "error writing file")
+		return errors.Wrap(err, "error writing up file")
 	}
 
 	writer.Flush()
