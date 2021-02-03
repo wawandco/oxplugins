@@ -1,4 +1,4 @@
-package app
+package middleware
 
 var middlewareGo = `
 // middleware package is intended to host the middlewares used

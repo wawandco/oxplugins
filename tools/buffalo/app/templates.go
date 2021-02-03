@@ -40,7 +40,6 @@ var routesGo = `
 package app
 
 import (
-	"{{.Module}}"
 	"{{.Module}}/app/actions/home"
 	"{{.Module}}/app/middleware"
 

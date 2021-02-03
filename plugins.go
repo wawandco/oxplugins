@@ -11,8 +11,10 @@ import (
 	"github.com/wawandco/oxplugins/tools/buffalo/action"
 	"github.com/wawandco/oxplugins/tools/buffalo/app"
 	"github.com/wawandco/oxplugins/tools/buffalo/cmd"
+	"github.com/wawandco/oxplugins/tools/buffalo/config"
 	"github.com/wawandco/oxplugins/tools/buffalo/embedded"
 	"github.com/wawandco/oxplugins/tools/buffalo/folders"
+	"github.com/wawandco/oxplugins/tools/buffalo/middleware"
 	"github.com/wawandco/oxplugins/tools/buffalo/model"
 	"github.com/wawandco/oxplugins/tools/buffalo/template"
 	"github.com/wawandco/oxplugins/tools/cli/help"
@@ -54,6 +56,8 @@ var Base = []plugins.Plugin{
 	&template.Initializer{},
 	&cmd.Initializer{},
 	&app.Initializer{},
+	&config.Initializer{},
+	&middleware.Initializer{},
 
 	// Testers
 	&test.Command{},

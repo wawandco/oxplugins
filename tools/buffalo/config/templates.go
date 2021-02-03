@@ -1,4 +1,4 @@
-package app
+package config
 
 var databaseYML = `
 development:
