@@ -8,6 +8,7 @@ import (
 	"github.com/wawandco/oxplugins/lifecycle/new"
 	"github.com/wawandco/oxplugins/lifecycle/test"
 	"github.com/wawandco/oxplugins/plugins"
+	embedded "github.com/wawandco/oxplugins/tools/buffalo/embeded"
 	"github.com/wawandco/oxplugins/tools/buffalo/folders"
 	"github.com/wawandco/oxplugins/tools/buffalo/model"
 	"github.com/wawandco/oxplugins/tools/buffalo/template"
@@ -60,6 +61,7 @@ var Base = []plugins.Plugin{
 	&folders.Initializer{},
 	&refresh.Initializer{},
 	&model.Initializer{},
+	&embedded.Initializer{},
 	// &flect.Initializer{},
 	// &docker.Initializer{},
 
