@@ -2,10 +2,12 @@ package model
 
 import (
 	"strings"
+
+	"github.com/gobuffalo/flect/name"
 )
 
 type attr struct {
-	Name   string
+	Name   name.Ident
 	goType string
 }
 
@@ -59,7 +61,7 @@ func buildAttrs(args []string) []attr {
 		}
 
 		attrs = append(attrs, attr{
-			Name:   strings.ToLower(slice[0]),
+			Name:   name.New(slice[0]),
 			goType: strings.ToLower(slice[1]),
 		})
 	}
