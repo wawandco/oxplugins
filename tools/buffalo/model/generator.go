@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/gobuffalo/flect"
+	"github.com/gobuffalo/flect/name"
 	"github.com/pkg/errors"
 )
 
@@ -70,12 +71,13 @@ func (g Generator) createModelFile(args []string) error {
 	path := filepath.Join(g.dir, filename)
 	attrs := buildAttrs(args)
 	data := opts{
-		Name:    g.name,
-		Attrs:   attrs,
-		Imports: buildImports(attrs),
+		Original: g.name,
+		Name:     name.New(g.name),
+		Attrs:    attrs,
+		Imports:  buildImports(attrs),
 	}
 
-	tmpl, err := template.New(filename).Funcs(templateFuncs).Parse(modelTemplate)
+	tmpl, err := template.New(filename).Parse(modelTemplate)
 	if err != nil {
 		return errors.Wrap(err, "parsing new template error")
 	}
@@ -97,10 +99,11 @@ func (g Generator) createModelTestFile() error {
 	filename := g.filename + "_test.go"
 	path := filepath.Join(g.dir, filename)
 	data := opts{
-		Name: g.name,
+		Original: g.name,
+		Name:     name.New(g.name),
 	}
 
-	tmpl, err := template.New(filename).Funcs(templateFuncs).Parse(modelTestTemplate)
+	tmpl, err := template.New(filename).Parse(modelTestTemplate)
 	if err != nil {
 		return errors.Wrap(err, "parsing new template error")
 	}

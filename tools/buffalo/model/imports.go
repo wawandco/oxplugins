@@ -6,7 +6,7 @@ import (
 )
 
 func buildImports(attrs []attr) []string {
-	imps := map[string]bool{}
+	imps := map[string]bool{"fmt": true}
 
 	ats := attrs
 	for _, a := range ats {

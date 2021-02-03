@@ -1,11 +1,5 @@
 package model
 
-import (
-	"html/template"
-
-	"github.com/gobuffalo/flect"
-)
-
 var modelTemplate string = `package models
 
 import (
@@ -14,45 +8,24 @@ import (
 	{{- end }}
 )
 
-// {{ properize .Name }} model struct
-type {{ properize .Name }} struct {
+// {{ .Name.Proper.String }} model struct
+type {{ .Name.Proper.String }} struct {
 	{{- range $attr := .Attrs }}
-	{{ pascalize $attr.Name }}	{{$attr.GoType }} ` + "`" + `json:"{{ underscore $attr.Name }}" db:"{{ underscore $attr.Name }}"` + "`" + `
+	{{ $attr.Name.Pascalize }}	{{$attr.GoType }} ` + "`" + `json:"{{ $attr.Name.Underscore }}" db:"{{ $attr.Name.Underscore }}"` + "`" + `
 	{{- end }}
 }
 
-// {{ pluralize .Name }} array model struct of {{ properize .Name }}
-type {{ pluralize .Name }} []{{ properize .Name }}
+// {{ .Name.Proper.Pluralize }} array model struct of {{ .Name.Proper.String }}
+type {{ .Name.Proper.Pluralize }} []{{ .Name.Proper.String }}
 
 // String converts the struct into a string value
-func ({{ .Char }} {{ properize .Name }}) String() string {
+func ({{ .Char }} {{ .Name.Proper.String }}) String() string {
 	return fmt.Sprintf("%+v\n", {{ .Char }})
 }
 `
 
 var modelTestTemplate string = `package models
 
-func (ms *ModelSuite) Test_{{ properize .Name }}() {
+func (ms *ModelSuite) Test_{{ .Name.Proper.String }}() {
 	ms.Fail("This test needs to be implemented!")
 }`
-
-var templateFuncs = template.FuncMap{
-	"capitalize": func(field string) string {
-		return flect.Capitalize(field)
-	},
-	"pascalize": func(field string) string {
-		return flect.Pascalize(field)
-	},
-	"pluralize": func(field string) string {
-		return flect.Pluralize(flect.Capitalize(field))
-	},
-	"properize": func(field string) string {
-		return flect.Capitalize(flect.Singularize(field))
-	},
-	"singularize": func(field string) string {
-		return flect.Singularize(field)
-	},
-	"underscore": func(field string) string {
-		return flect.Underscore(field)
-	},
-}
