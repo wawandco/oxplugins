@@ -58,14 +58,14 @@ func TestFolderName(t *testing.T) {
 		args     []string
 		expected string
 	}{
-		{[]string{"aaa"}, "aaa"},
-		{[]string{"something/aaa"}, "aaa"},
-		{[]string{"something\\aaa"}, "something\\aaa"},
+		{[]string{"new", "aaa"}, "aaa"},
+		{[]string{"new", "something/aaa"}, "aaa"},
+		{[]string{"new", "something\\aaa"}, "something\\aaa"},
 	}
 
 	pl := &new.Command{}
 	for _, tcase := range tcases {
-		name := pl.FolderName(tcase.args)
+		name := pl.AppName(tcase.args)
 		if name != tcase.expected {
 			t.Errorf("should return %v got %v", tcase.expected, name)
 		}

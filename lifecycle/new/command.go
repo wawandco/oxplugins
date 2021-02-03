@@ -38,7 +38,7 @@ func (d *Command) Run(ctx context.Context, root string, args []string) error {
 		return ErrNoNameProvided
 	}
 
-	name := filepath.Base(args[1])
+	name := d.AppName(args)
 
 	var dx sync.Map
 	dx.Store("args", args)
@@ -77,6 +77,6 @@ func (d *Command) Receive(plugins []plugins.Plugin) {
 		}
 	}
 }
-func (d *Command) FolderName(args []string) string {
-	return filepath.Base(args[0])
+func (d *Command) AppName(args []string) string {
+	return filepath.Base(args[1])
 }
