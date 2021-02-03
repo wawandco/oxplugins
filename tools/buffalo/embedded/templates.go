@@ -1,7 +1,6 @@
 package embedded
 
 var embedGo = `
-..
 package {{.}}
 
 import (
