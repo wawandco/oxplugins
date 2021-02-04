@@ -22,7 +22,7 @@ type Tinit struct {
 
 func (t Tinit) Name() string { return "tinit" }
 
-func (t *Tinit) Initialize(ctx context.Context, dx sync.Map) error {
+func (t *Tinit) Initialize(ctx context.Context, dx *sync.Map) error {
 	t.called = true
 
 	if f, ok := dx.Load("root"); ok {

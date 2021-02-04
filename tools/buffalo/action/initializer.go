@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"os"
@@ -24,7 +25,7 @@ func (i Initializer) Name() string {
 	return "model/initializer"
 }
 
-func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
+func (i *Initializer) Initialize(ctx context.Context, dx *sync.Map) error {
 	m, ok := dx.Load("module")
 	if !ok {
 		return ErrIncompleteArgs
@@ -87,6 +88,7 @@ func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
 		return err
 	}
 
+	fmt.Printf("[info] Created: \n-- app/actions/actions.go\n-- app/actions/actions_test.go\n")
 	return nil
 }
 

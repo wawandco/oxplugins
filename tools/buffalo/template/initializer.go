@@ -24,7 +24,7 @@ func (i Initializer) Name() string {
 	return "template/initializer"
 }
 
-func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
+func (i *Initializer) Initialize(ctx context.Context, dx *sync.Map) error {
 	n, ok := dx.Load("name")
 	if !ok {
 		return ErrIncompleteArgs

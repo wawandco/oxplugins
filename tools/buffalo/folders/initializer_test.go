@@ -25,7 +25,7 @@ func TestInitializerRun(t *testing.T) {
 		dx.Store("folder", filepath.Join(root, "app"))
 
 		i := Initializer{}
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Errorf("err should be nil but got %v", err)
 		}
@@ -44,7 +44,7 @@ func TestInitializerRun(t *testing.T) {
 		i := Initializer{}
 		var dx sync.Map
 
-		err := i.Initialize(context.Background(), dx)
+		err := i.Initialize(context.Background(), &dx)
 		if err != ErrNameNeeded {
 			t.Errorf("err should ne ErrNameNeeded but got %v", err)
 		}
@@ -64,7 +64,7 @@ func TestInitializerRun(t *testing.T) {
 		dx.Store("folder", filepath.Join(root, "app"))
 
 		i := Initializer{}
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Errorf("err should be nil but got %v", err)
 		}
@@ -94,7 +94,7 @@ func TestInitializerRun(t *testing.T) {
 		dx.Store("folder", filepath.Join(root, "app"))
 
 		i := Initializer{}
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != ErrFolderExists {
 			t.Errorf("err should be ErrFolderExists but got %v", err)
 		}
@@ -119,7 +119,7 @@ func TestInitializerRun(t *testing.T) {
 		dx.Store("folder", filepath.Join(root, "app"))
 
 		i := Initializer{force: true}
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Errorf("err should be nil but got %v", err)
 		}

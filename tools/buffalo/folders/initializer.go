@@ -60,7 +60,7 @@ func (i Initializer) Name() string {
 
 // Initialize the app by creating the needed folders. It will infer the name of the
 // folder from the args passed.
-func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
+func (i *Initializer) Initialize(ctx context.Context, dx *sync.Map) error {
 	n, ok := dx.Load("name")
 	if !ok {
 		return ErrNameNeeded

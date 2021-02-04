@@ -31,7 +31,7 @@ func TestInitializer(t *testing.T) {
 		dx.Store("args", []string{"new", "cool/myapp"})
 		dx.Store("folder", filepath.Join(root, "myapp"))
 
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Fatalf("error should be nil, got %v", err)
 		}
@@ -78,7 +78,7 @@ func TestInitializer(t *testing.T) {
 
 		i := Initializer{}
 
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 
 		if err != nil {
 			t.Fatalf("error should be nil, got %v", err)

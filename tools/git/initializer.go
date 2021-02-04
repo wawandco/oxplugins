@@ -22,7 +22,7 @@ func (i Initializer) Name() string {
 	return "model/initializer"
 }
 
-func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
+func (i *Initializer) Initialize(ctx context.Context, dx *sync.Map) error {
 	f, ok := dx.Load("folder")
 	if !ok {
 		return ErrIncompleteArgs

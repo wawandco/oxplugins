@@ -48,7 +48,7 @@ func (d *Command) Run(ctx context.Context, root string, args []string) error {
 	dx.Store("module", args[1])
 
 	for _, ini := range d.initializers {
-		err := ini.Initialize(ctx, dx)
+		err := ini.Initialize(ctx, &dx)
 		if err != nil {
 			return err
 		}

@@ -29,7 +29,7 @@ func TestInitializer(t *testing.T) {
 		dx.Store("name", "myapp")
 		dx.Store("folder", filepath.Join(root, "myapp"))
 
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Fatalf("error should be nil, got %v", err)
 		}
@@ -52,24 +52,6 @@ func TestInitializer(t *testing.T) {
 				t.Errorf("`%v` does not contain `%v`", path, c)
 			}
 		}
-
-		// if !bytes.Contains(bm, []byte(`New() *buffalo.App {`)) {
-		// 	t.Fatal("should use contain func signature")
-		// }
-
-		// bm, err = ioutil.ReadFile(filepath.Join(root, "myapp", "app", "routes.go"))
-		// if err != nil {
-		// 	t.Fatal("should have created the file")
-		// }
-
-		// if !bytes.Contains(bm, []byte(`package app`)) {
-		// 	t.Fatal("should contain package name")
-		// }
-
-		// if !bytes.Contains(bm, []byte(`func setRoutes(app *buffalo.App) {`)) {
-		// 	t.Fatal("should use contain func signature")
-		// }
-
 	})
 
 	t.Run("IncompleteArgs", func(t *testing.T) {
@@ -88,19 +70,19 @@ func TestInitializer(t *testing.T) {
 		i := Initializer{}
 		var dx sync.Map
 
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != ErrIncompleteArgs {
 			t.Fatalf("error should be `%v`, got `%v`", ErrIncompleteArgs, err)
 		}
 
 		dx.Store("folder", filepath.Join(root, "myapp"))
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != ErrIncompleteArgs {
 			t.Fatalf("error should be `%v`, got `%v`", ErrIncompleteArgs, err)
 		}
 
 		dx.Store("module", "some/myapp")
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Fatalf("error should be `%v`, got `%v`", nil, err)
 		}

@@ -24,7 +24,7 @@ func (i Initializer) Name() string {
 	return "middleware/initializer"
 }
 
-func (i *Initializer) Initialize(ctx context.Context, dx sync.Map) error {
+func (i *Initializer) Initialize(ctx context.Context, dx *sync.Map) error {
 	m, ok := dx.Load("module")
 	if !ok {
 		return ErrIncompleteArgs

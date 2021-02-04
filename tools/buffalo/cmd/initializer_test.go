@@ -29,7 +29,7 @@ func TestInitializer(t *testing.T) {
 		dx.Store("name", "myapp")
 		dx.Store("folder", filepath.Join(root, "myapp"))
 
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Fatalf("error should be nil, got %v", err)
 		}
@@ -65,25 +65,25 @@ func TestInitializer(t *testing.T) {
 		i := Initializer{}
 		var dx sync.Map
 
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != ErrIncompleteArgs {
 			t.Fatalf("error should be `%v`, got `%v`", ErrIncompleteArgs, err)
 		}
 
 		dx.Store("folder", filepath.Join(root, "myapp"))
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != ErrIncompleteArgs {
 			t.Fatalf("error should be `%v`, got `%v`", ErrIncompleteArgs, err)
 		}
 
 		dx.Store("module", "some/myapp")
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != ErrIncompleteArgs {
 			t.Fatalf("error should be `%v`, got `%v`", ErrIncompleteArgs, err)
 		}
 
 		dx.Store("name", "myapp")
-		err = i.Initialize(context.Background(), dx)
+		err = i.Initialize(context.Background(), &dx)
 		if err != nil {
 			t.Fatalf("error should be `%v`, got `%v`", nil, err)
 		}
