@@ -19,6 +19,7 @@ import (
 	"github.com/wawandco/oxplugins/tools/buffalo/template"
 	"github.com/wawandco/oxplugins/tools/cli/help"
 	"github.com/wawandco/oxplugins/tools/envy"
+	"github.com/wawandco/oxplugins/tools/git"
 	"github.com/wawandco/oxplugins/tools/grift"
 	"github.com/wawandco/oxplugins/tools/node"
 	"github.com/wawandco/oxplugins/tools/ox"
@@ -58,6 +59,7 @@ var Base = []plugins.Plugin{
 	&app.Initializer{},
 	&config.Initializer{},
 	&middleware.Initializer{},
+	&git.Initializer{},
 
 	// Testers
 	&test.Command{},
