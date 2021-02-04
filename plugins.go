@@ -60,6 +60,7 @@ var Base = []plugins.Plugin{
 	&config.Initializer{},
 	&middleware.Initializer{},
 	&git.Initializer{},
+	&action.Initializer{},
 
 	// Testers
 	&test.Command{},
