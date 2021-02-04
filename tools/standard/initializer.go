@@ -14,7 +14,7 @@ func (i Initializer) Name() string {
 }
 
 // Initialize the go module
-func (i *Initializer) Initialize(ctx context.Context, data sync.Map) error {
+func (i *Initializer) Initialize(ctx context.Context, data *sync.Map) error {
 	return nil
 }
 
