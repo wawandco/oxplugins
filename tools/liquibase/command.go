@@ -117,6 +117,11 @@ func (lb *Command) Rollback() error {
 		return err
 	}
 
+	// Default to 1 on down.
+	if lb.steps == 0 {
+		lb.steps = 1
+	}
+
 	for i := 0; i < lb.steps; i++ {
 		var id, file string
 		row := conn.QueryRow(context.Background(), `SELECT filename, id FROM databasechangelog ORDER BY orderexecuted desc`)
