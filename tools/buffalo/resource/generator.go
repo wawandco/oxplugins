@@ -27,8 +27,8 @@ func (g Generator) Name() string {
 // app/templates/[name]/new.plush.html
 // app/templates/[name]/edit.plush.html
 // app/templates/[name]/show.plush.html
-// migration/[name].up.fizz
-// migration/[name].down.fizz
+// migrations/[name].up.fizz
+// migrations/[name].down.fizz
 func (g Generator) Generate(ctx context.Context, root string, args []string) error {
 	if len(args) < 3 {
 		return errors.Errorf("no name specified, please use `ox generate resource [name]`")
