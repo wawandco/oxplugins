@@ -2,12 +2,9 @@ package resource
 
 import (
 	"context"
-	"path/filepath"
+	"fmt"
 
 	"github.com/pkg/errors"
-
-	"github.com/wawandco/oxplugins/tools/buffalo/model"
-	"github.com/wawandco/oxplugins/tools/pop/migration/creator"
 )
 
 // Generator allows to identify resource as a plugin
@@ -34,25 +31,24 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return errors.Errorf("no name specified, please use `ox generate resource [name]`")
 	}
 
-	name := args[2]
-	attrs := args[3:]
+	resource := New(root, args)
+
+	// Generating Templates
+	fmt.Printf("[info] Generating Templates...\n")
+	if err := resource.GenerateTemplates(); err != nil {
+		return errors.Wrap(err, "generating templates error")
+	}
 
 	// Generating Model
-	modelsPath := filepath.Join(root, "app", "models")
-	model := model.New(modelsPath, name, attrs)
-	if err := model.Create(); err != nil {
-		return errors.Wrap(err, "error creating model")
+	fmt.Printf("[info] Generating Model...\n")
+	if err := resource.GenerateModel(); err != nil {
+		return errors.Wrap(err, "generating model error")
 	}
 
-	// Generating Migration
-	migrationPath := filepath.Join(root, "migrations")
-	creator, err := creator.CreateMigrationFor("fizz")
-	if err != nil {
-		return errors.Wrap(err, "error looking for migration creator")
-	}
-
-	if err = creator.Create(migrationPath, args[2:]); err != nil {
-		return errors.Wrap(err, "failed creating migrations")
+	// // Generating Migration
+	fmt.Printf("[info] Generating Migrations...\n")
+	if err := resource.GenerateMigrations(); err != nil {
+		return errors.Wrap(err, "generating migrations error")
 	}
 
 	return nil
