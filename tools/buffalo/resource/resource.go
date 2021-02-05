@@ -56,7 +56,7 @@ func (r *Resource) GenerateMigrations() error {
 		return errors.Wrap(err, "error looking for migration creator")
 	}
 
-	if err = creator.Create(migrationPath, r.originalArgs[2:]); err != nil {
+	if err = creator.Create(migrationPath, r.originalArgs); err != nil {
 		return errors.Wrap(err, "failed creating migrations")
 	}
 
