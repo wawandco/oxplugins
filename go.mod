@@ -14,7 +14,7 @@ require (
 	github.com/gobuffalo/pop v4.13.1+incompatible
 	github.com/gobuffalo/pop/v5 v5.1.3
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
-	github.com/jackc/pgconn v1.6.0 // indirect
+	github.com/jackc/pgx/v4 v4.10.1
 	github.com/karrick/godirwalk v1.16.1 // indirect
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/markbates/grift v1.5.0
@@ -25,6 +25,6 @@ require (
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
 	golang.org/x/mod v0.4.0
 	golang.org/x/net v0.0.0-20201021035429-f5854403a974 // indirect
-	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9 // indirect
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
