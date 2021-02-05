@@ -17,6 +17,7 @@ func Test_ActionGenerator(t *testing.T) {
 	t.Run("generate action", func(t *testing.T) {
 		dir := t.TempDir()
 		modelsPath := filepath.Join(dir, "app", "actions")
+		templatePath := filepath.Join(dir, "app", "templates")
 		if err := os.MkdirAll(modelsPath, os.ModePerm); err != nil {
 			t.Errorf("creating templates folder should not be error, but got %v", err)
 		}
@@ -32,11 +33,16 @@ func Test_ActionGenerator(t *testing.T) {
 
 		if !g.exists(filepath.Join(modelsPath, "user_test.go")) {
 			t.Error("'user_test.go' file does not exists on the path")
+		}
+
+		if !g.exists(filepath.Join(templatePath, "user.plush.html")) {
+			t.Error("'user.plush.html' file does not exists on the path")
 		}
 	})
 	t.Run("generate action and checking the content", func(t *testing.T) {
 		dir := t.TempDir()
 		modelsPath := filepath.Join(dir, "app", "actions")
+		templatePath := filepath.Join(dir, "app", "templates")
 		if err := os.MkdirAll(modelsPath, os.ModePerm); err != nil {
 			t.Errorf("creating templates folder should not be error, but got %v", err)
 		}
@@ -52,6 +58,10 @@ func Test_ActionGenerator(t *testing.T) {
 
 		if !g.exists(filepath.Join(modelsPath, "user_test.go")) {
 			t.Error("'user_test.go' file does not exists on the path")
+		}
+
+		if !g.exists(filepath.Join(templatePath, "user.plush.html")) {
+			t.Error("'user.plush.html' file does not exists on the path")
 		}
 		content, err := ioutil.ReadFile(filepath.Join(modelsPath, "user.go"))
 		if err != nil {

@@ -50,6 +50,10 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 
 	fmt.Printf("[info] Action generated in: \n-- app/actions/%s.go\n-- app/actions/%s_test.go\n", g.name, g.name)
 
+	if err := g.createActionTemplate(root); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -116,6 +120,28 @@ func (g Generator) createActionTestFile() error {
 		return errors.Wrap(err, "writing new template error")
 	}
 
+	return nil
+}
+
+func (g Generator) createActionTemplate(root string) error {
+	filename := g.filename + ".plush.html"
+	path := filepath.Join(root, "app", "templates")
+	err := os.Mkdir(path, 0700)
+
+	if err != nil {
+		return err
+	}
+
+	filePath := filepath.Join(path, filename)
+
+	if !g.exists(filePath) {
+		var tpl bytes.Buffer
+
+		err := ioutil.WriteFile(filePath, tpl.Bytes(), 0700)
+		if err != nil {
+			return errors.Wrap(err, "writing new template error")
+		}
+	}
 	return nil
 }
 
