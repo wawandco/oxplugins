@@ -30,7 +30,7 @@ type Resource struct {
 // New creates a new instance of Resource
 func New(root string, args []string) *Resource {
 	modelsPath := filepath.Join(root, "app", "models")
-	model := model.New(modelsPath, args[2], args[3:])
+	model := model.New(modelsPath, args[0], args[0:])
 	actions := []name.Ident{
 		name.New("list"),
 		name.New("show"),
@@ -43,13 +43,13 @@ func New(root string, args []string) *Resource {
 
 	return &Resource{
 		Actions:  actions,
-		Args:     args[3:],
+		Args:     args[1:],
 		Model:    model,
 		ModelPkg: root + "/app/models",
-		Name:     name.New(args[2]),
+		Name:     name.New(args[0]),
 
-		originalArgs: args[2:],
-		originalName: args[2],
+		originalArgs: args[0:],
+		originalName: args[0],
 		root:         root,
 	}
 }
