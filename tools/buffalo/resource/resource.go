@@ -45,7 +45,7 @@ func New(root string, args []string) *Resource {
 		Actions:  actions,
 		Args:     args[3:],
 		Model:    model,
-		ModelPkg: root + "app/models",
+		ModelPkg: root + "/app/models",
 		Name:     name.New(args[2]),
 
 		originalArgs: args[2:],
