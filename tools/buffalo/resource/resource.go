@@ -10,6 +10,7 @@ import (
 	"github.com/gobuffalo/flect/name"
 	"github.com/pkg/errors"
 
+	"github.com/wawandco/oxplugins/internal/info"
 	"github.com/wawandco/oxplugins/tools/buffalo/model"
 	"github.com/wawandco/oxplugins/tools/pop/migration/creator"
 )
@@ -29,6 +30,11 @@ type Resource struct {
 
 // New creates a new instance of Resource
 func New(root string, args []string) *Resource {
+	module, err := info.ModuleName()
+	if err != nil {
+		module = root + "/app/models"
+	}
+
 	modelsPath := filepath.Join(root, "app", "models")
 	model := model.New(modelsPath, args[0], args[0:])
 	actions := []name.Ident{
@@ -45,7 +51,7 @@ func New(root string, args []string) *Resource {
 		Actions:  actions,
 		Args:     args[1:],
 		Model:    model,
-		ModelPkg: root + "/app/models",
+		ModelPkg: module + "/app/models",
 		Name:     name.New(args[0]),
 
 		originalArgs: args[0:],
