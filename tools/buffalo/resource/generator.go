@@ -31,7 +31,7 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 		return errors.Errorf("no name specified, please use `ox generate resource [name]`")
 	}
 
-	resource := New(root, args)
+	resource := New(root, args[2:])
 
 	// Generating Templates
 	fmt.Printf("[info] Generating Actions...\n")
