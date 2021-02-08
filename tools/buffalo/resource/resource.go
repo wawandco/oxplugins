@@ -56,7 +56,7 @@ func New(root string, args []string) *Resource {
 
 // GenerateActions generates the actions for the resource
 func (r *Resource) GenerateActions() error {
-	actionName := r.Name.Proper().Underscore().String()
+	actionName := r.Name.Proper().Pluralize().Underscore().String()
 	dirPath := filepath.Join(r.root, "app", "actions")
 	actions := map[string]string{
 		actionName:           actionTmpl,
