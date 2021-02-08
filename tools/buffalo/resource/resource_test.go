@@ -138,23 +138,11 @@ func Test_GenerateTemplates(t *testing.T) {
 
 	// Validating Files existence
 	templateFolder := filepath.Join(dir, "app", "templates", "cars")
-	if _, err := os.Stat(filepath.Join(templateFolder, "index.plush.html")); os.IsNotExist(err) {
-		t.Error("'index.plush.html' file does not exists on the path")
-	}
+	templates := []string{"index", "new", "edit", "show", "form"}
 
-	if _, err := os.Stat(filepath.Join(templateFolder, "new.plush.html")); os.IsNotExist(err) {
-		t.Error("'new.plush.html' file does not exists on the path")
-	}
-
-	if _, err := os.Stat(filepath.Join(templateFolder, "edit.plush.html")); os.IsNotExist(err) {
-		t.Error("'edit.plush.html' file does not exists on the path")
-	}
-
-	if _, err := os.Stat(filepath.Join(templateFolder, "show.plush.html")); os.IsNotExist(err) {
-		t.Error("'show.plush.html' file does not exists on the path")
-	}
-
-	if _, err := os.Stat(filepath.Join(templateFolder, "form.plush.html")); os.IsNotExist(err) {
-		t.Error("'form.plush.html' file does not exists on the path")
+	for _, tmpl := range templates {
+		if _, err := os.Stat(filepath.Join(templateFolder, tmpl+".plush.html")); os.IsNotExist(err) {
+			t.Error("'index.plush.html' file does not exists on the path")
+		}
 	}
 }
