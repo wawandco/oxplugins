@@ -29,8 +29,6 @@ type Resource struct {
 
 // New creates a new instance of Resource
 func New(root string, args []string) *Resource {
-	os.Getwd()
-
 	modelsPath := filepath.Join(root, "app", "models")
 	model := model.New(modelsPath, args[2], args[3:])
 	actions := []name.Ident{
