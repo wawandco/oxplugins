@@ -16,9 +16,11 @@ import (
 
 // Resource model struct
 type Resource struct {
-	Name  name.Ident
-	Model model.Model
-	Args  []string
+	Actions  []name.Ident
+	Name     name.Ident
+	Model    model.Model
+	ModelPkg string
+	Args     []string
 
 	originalArgs []string
 	originalName string
@@ -27,22 +29,59 @@ type Resource struct {
 
 // New creates a new instance of Resource
 func New(root string, args []string) *Resource {
+	os.Getwd()
+
 	modelsPath := filepath.Join(root, "app", "models")
 	model := model.New(modelsPath, args[2], args[3:])
+	actions := []name.Ident{
+		name.New("list"),
+		name.New("show"),
+		name.New("new"),
+		name.New("create"),
+		name.New("edit"),
+		name.New("update"),
+		name.New("destroy"),
+	}
 
 	return &Resource{
-		Args:  args[3:],
-		Model: model,
-		Name:  name.New(args[2]),
+		Actions:  actions,
+		Args:     args[3:],
+		Model:    model,
+		ModelPkg: root + "app/models",
+		Name:     name.New(args[2]),
 
 		originalArgs: args[2:],
+		originalName: args[2],
+		root:         root,
 	}
 }
 
-// GenerateModel generates the model for the resource
-func (r *Resource) GenerateModel() error {
-	if err := r.Model.Create(); err != nil {
-		return errors.Wrap(err, "error creating model")
+// GenerateActions generates the actions for the resource
+func (r *Resource) GenerateActions() error {
+	actionName := r.Name.Proper().Underscore().String()
+	dirPath := filepath.Join(r.root, "app", "actions")
+	actions := map[string]string{
+		actionName:           actionTmpl,
+		actionName + "_test": actionTestTmpl,
+	}
+
+	for name, content := range actions {
+		filename := name + ".go"
+		path := filepath.Join(dirPath, filename)
+
+		tmpl, err := template.New(filename).Parse(content)
+		if err != nil {
+			return errors.Wrap(err, "parsing new template error")
+		}
+
+		var tpl bytes.Buffer
+		if err = tmpl.Execute(&tpl, r); err != nil {
+			return errors.Wrap(err, "executing new template error")
+		}
+
+		if err = ioutil.WriteFile(path, tpl.Bytes(), 0655); err != nil {
+			return errors.Wrap(err, "writing new template error")
+		}
 	}
 
 	return nil
@@ -58,6 +97,15 @@ func (r *Resource) GenerateMigrations() error {
 
 	if err = creator.Create(migrationPath, r.originalArgs); err != nil {
 		return errors.Wrap(err, "failed creating migrations")
+	}
+
+	return nil
+}
+
+// GenerateModel generates the model for the resource
+func (r *Resource) GenerateModel() error {
+	if err := r.Model.Create(); err != nil {
+		return errors.Wrap(err, "error creating model")
 	}
 
 	return nil

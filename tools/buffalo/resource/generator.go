@@ -34,6 +34,12 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	resource := New(root, args)
 
 	// Generating Templates
+	fmt.Printf("[info] Generating Actions...\n")
+	if err := resource.GenerateActions(); err != nil {
+		return errors.Wrap(err, "generating actions error")
+	}
+
+	// Generating Templates
 	fmt.Printf("[info] Generating Templates...\n")
 	if err := resource.GenerateTemplates(); err != nil {
 		return errors.Wrap(err, "generating templates error")
@@ -50,6 +56,8 @@ func (g Generator) Generate(ctx context.Context, root string, args []string) err
 	if err := resource.GenerateMigrations(); err != nil {
 		return errors.Wrap(err, "generating migrations error")
 	}
+
+	fmt.Printf("[info] %s resource has been generated successfully \n", resource.originalName)
 
 	return nil
 }
